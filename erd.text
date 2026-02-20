@@ -1,0 +1,45 @@
+Project copy/
+├── backend/
+│   ├── controllers/        # Business logic
+│   │   ├── genres.controller.js
+│   │   ├── movies.controller.js
+│   │   ├── reviews.controller.js
+│   │   ├── users.controller.js
+│   │   └── watchlist.controller.js
+│   ├── db/                 # Database scripts
+│   │   ├── schema.sql
+│   │   ├── seed.js
+│   │   ├── setup.js
+│   │   ├── movie-manager.js
+│   │   └── db.js
+│   ├── routes/            # API routes
+│   │   ├── genres.routes.js
+│   │   ├── movies.routes.js
+│   │   ├── reviews.routes.js
+│   │   ├── users.routes.js
+│   │   └── watchlist.routes.js
+│   ├── server.js          # Express app
+│   └── package.json
+│
+└── frontend/
+    ├── src/
+    │   ├── components/    # (currently empty)
+    │   ├── context/       # State management
+    │   │   └── UserContext.js
+    │   ├── pages/         # Route components
+    │   │   ├── Home.js
+    │   │   ├── MovieDetails.js
+    │   │   ├── Watchlist.js
+    │   │   ├── Login.js
+    │   │   └── Register.js
+    │   ├── services/      # API calls
+    │   │   ├── api.js
+    │   │   └── tmdb.js
+    │   ├── styles/        # CSS files
+    │   │   ├── Home.css
+    │   │   ├── MovieDetails.css
+    │   │   ├── Watchlist.css
+    │   │   └── Auth.css
+    │   ├── App.js
+    │   └── index.js
+    └── package.json
