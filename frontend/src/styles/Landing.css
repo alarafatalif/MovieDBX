@@ -1,0 +1,308 @@
+/* ═══════════════════════════════════════════════════════════
+   Landing.css — MovieDBX Welcome Page
+   Full-screen dark intro with animated background
+   ═══════════════════════════════════════════════════════════ */
+
+.landing {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #0a0e17;
+}
+
+/* ── Animated Background ─────────────────────────────────── */
+.landing-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.landing-grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.landing-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0;
+  animation: glowPulse 6s ease-in-out infinite;
+}
+
+.landing--loaded .landing-glow {
+  opacity: 1;
+}
+
+.landing-glow-1 {
+  width: 500px;
+  height: 500px;
+  background: rgba(102, 126, 234, 0.12);
+  top: -10%;
+  left: -5%;
+  animation-delay: 0s;
+}
+
+.landing-glow-2 {
+  width: 400px;
+  height: 400px;
+  background: rgba(139, 92, 246, 0.08);
+  bottom: -10%;
+  right: -5%;
+  animation-delay: 2s;
+}
+
+.landing-glow-3 {
+  width: 300px;
+  height: 300px;
+  background: rgba(102, 126, 234, 0.06);
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation-delay: 4s;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.15); }
+}
+
+/* Floating abstract shapes */
+.landing-floater {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(102, 126, 234, 0.35);
+  opacity: 0;
+  animation: floatUp 18s linear infinite;
+  pointer-events: none;
+  filter: blur(1px);
+}
+
+.landing-floater-1 { left: 8%; width: 6px; height: 6px; animation-duration: 20s; animation-delay: 0s; }
+.landing-floater-2 { left: 25%; width: 4px; height: 4px; animation-duration: 24s; animation-delay: 3s; background: rgba(139, 92, 246, 0.3); }
+.landing-floater-3 { left: 50%; width: 8px; height: 8px; animation-duration: 18s; animation-delay: 6s; }
+.landing-floater-4 { left: 72%; width: 3px; height: 3px; animation-duration: 22s; animation-delay: 2s; background: rgba(139, 92, 246, 0.25); }
+.landing-floater-5 { left: 90%; width: 5px; height: 5px; animation-duration: 26s; animation-delay: 8s; }
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(110vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% {
+    transform: translateY(-10vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ── Content ─────────────────────────────────────────────── */
+.landing-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 40px 24px;
+  max-width: 520px;
+  width: 100%;
+
+  /* Fade-in on load */
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.landing--loaded .landing-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Logo */
+.landing-logo {
+  margin-bottom: 12px;
+}
+
+.landing-logo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 20px;
+  animation: logoBounce 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.3));
+}
+
+@keyframes logoBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Title */
+.landing-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #e6edf3;
+  letter-spacing: -1px;
+  margin: 0 0 8px;
+  line-height: 1.1;
+}
+
+.landing-title-accent {
+  background: linear-gradient(135deg, #667eea, #9b59b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Tagline */
+.landing-tagline {
+  font-size: 1.05rem;
+  color: #8b949e;
+  margin: 0 0 32px;
+  line-height: 1.5;
+}
+
+/* Feature pills */
+.landing-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 36px;
+}
+
+.landing-feature {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #8b949e;
+}
+
+.landing-feature svg {
+  flex-shrink: 0;
+  color: #818cf8;
+}
+
+/* ── Action Buttons ──────────────────────────────────────── */
+.landing-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.landing-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  letter-spacing: 0.3px;
+}
+
+.landing-btn svg {
+  flex-shrink: 0;
+}
+
+/* Login — primary accent */
+.landing-btn-primary {
+  background: linear-gradient(135deg, #667eea, #5a6fd6);
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+}
+
+.landing-btn-primary:hover {
+  background: linear-gradient(135deg, #7b8ff0, #667eea);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(102, 126, 234, 0.45);
+}
+
+/* Sign Up — outline */
+.landing-btn-secondary {
+  background: transparent;
+  color: #667eea;
+  border: 2px solid rgba(102, 126, 234, 0.4);
+}
+
+.landing-btn-secondary:hover {
+  background: rgba(102, 126, 234, 0.08);
+  border-color: #667eea;
+  transform: translateY(-2px);
+}
+
+/* Guest — subtle */
+.landing-btn-guest {
+  background: rgba(255, 255, 255, 0.04);
+  color: #8b949e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.landing-btn-guest:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e6edf3;
+  transform: translateY(-2px);
+}
+
+/* Footer text */
+.landing-footer {
+  font-size: 0.78rem;
+  color: #484f58;
+  margin: 0;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .landing-title {
+    font-size: 2.5rem;
+  }
+
+  .landing-tagline {
+    font-size: 0.95rem;
+  }
+
+  .landing-logo-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .landing-logo-icon svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .landing-features {
+    gap: 6px;
+  }
+
+  .landing-feature {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+
+  .landing-btn {
+    padding: 12px 20px;
+    font-size: 0.95rem;
+  }
+}
