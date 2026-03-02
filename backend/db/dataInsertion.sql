@@ -720,6 +720,365 @@ INSERT INTO reviews (movie_id, user_id, rating, review_text) VALUES
 ((SELECT movie_id FROM movies WHERE title = 'Arcane' AND content_type = 'series' LIMIT 1), (SELECT user_id FROM users WHERE username = 'MovieMaven'), 9.0, 'Arcane proves that video game adaptations can be prestige television. The class struggle between Piltover and Zaun drives a narrative full of complex characters with no easy heroes or villains. Silco is a surprisingly sympathetic antagonist. The fight choreography is stunning.')
 ON CONFLICT (movie_id, user_id) DO NOTHING;
 
+-- ============================
+-- HINDI MOVIES
+-- ============================
+INSERT INTO movies (title, description, release_year, duration, has_oscar, poster_url, trailer_url, netflix_url, content_type, seasons, total_episodes, episodes_per_season) VALUES
+('3 Idiots', 'Two friends embark on a quest to find a long-lost college buddy. As they trace his journey, reminiscences take them on a hilarious and heartwarming ride through their days at India''s most prestigious engineering school, ICE. The film challenges the Indian obsession with rote learning and societal pressure through the irreverent genius Rancho, who dared to think differently. A film that made an entire generation question the meaning of success and the price of following your passion.', 2009, 170, false, NULL, 'https://www.youtube.com/watch?v=xvszmNXdM4w', NULL, 'movie', NULL, NULL, NULL),
+('Dangal', 'Based on the true story of Mahavir Singh Phogat, a former amateur wrestler who trains his daughters Geeta and Babita to become world-class wrestlers against extraordinary odds and deep-rooted gender prejudice in rural Haryana, India. Defying a society that saw women only as homemakers, Mahavir transforms his daughters into champions who compete at the Commonwealth Games, proving that gold medals know no gender and inspiring a nation to rethink what girls can achieve.', 2016, 161, false, NULL, 'https://www.youtube.com/watch?v=x_7YlGv9u1g', NULL, 'movie', NULL, NULL, NULL),
+('Gangs of Wasseypur', 'An epic saga of coal, crime, and revenge spanning three generations of feuding families in the coal-mining town of Wasseypur, Jharkhand. Beginning in the 1940s under British rule and stretching into the modern era, the film chronicles the blood-soaked rivalry between the families of Shahid Khan, Ramadhir Singh, and their descendants, weaving a tapestry of power, betrayal, and vengeance where every generation inherits the sins of the last. India''s answer to The Godfather, told with raw, kinetic energy.', 2012, 321, false, NULL, 'https://www.youtube.com/watch?v=jmJSkhEhMGY', NULL, 'movie', NULL, NULL, NULL),
+('Lagaan', 'In 1893 British India, the villagers of Champaner face crushing double taxation during a devastating drought. When their young leader Bhuvan boldly challenges the arrogant Captain Russell to a cricket match — a game the villagers have never played — with the stakes being complete tax exemption for three years, an extraordinary underdog story unfolds. Assembling a ragtag team of untouchables, women sympathizers, and unlikely heroes, Bhuvan must unite a divided village to defeat the British at their own game.', 2001, 224, false, NULL, 'https://www.youtube.com/watch?v=o1Un7XqPXAk', NULL, 'movie', NULL, NULL, NULL),
+('Dil Chahta Hai', 'The lives, loves, and friendships of three inseparable college friends — the confident Akash, the sensitive Sid, and the romantic Sameer — as they navigate the tumultuous transition from carefree youth to complicated adulthood in modern India. When their bond is tested by misunderstandings, romantic failures, and life''s harsh realities, they discover that true friendship isn''t about always being together — it''s about always being there for each other.', 2001, 183, false, NULL, 'https://www.youtube.com/watch?v=E5TogDa_Mfo', NULL, 'movie', NULL, NULL, NULL),
+('Rang De Basanti', 'A British documentary filmmaker arrives in India to make a film about the forgotten freedom fighters of the 1920s Indian independence movement. She casts a group of carefree Delhi University students in the roles of Bhagat Singh, Chandrashekhar Azad, and their comrades. As the students immerse themselves in the lives of these revolutionaries, something profound awakens within them — and when a personal tragedy strikes, history begins to repeat itself in the most unexpected way.', 2006, 167, false, NULL, 'https://www.youtube.com/watch?v=kgC2pQrYVJE', NULL, 'movie', NULL, NULL, NULL),
+('Taare Zameen Par', 'Eight-year-old Ishaan Awasthi, a daydreaming, art-loving child who struggles with dyslexia, is labelled stupid and problematic by everyone around him. When his frustrated parents send him to a boarding school, a compassionate art teacher named Ram Shankar Nikumbh recognizes Ishaan''s hidden brilliance and fights to unlock the extraordinary imagination trapped inside a boy the world had given up on. A deeply moving film about the beauty of different minds and the teachers who change lives.', 2007, 165, false, NULL, 'https://www.youtube.com/watch?v=V2VEhSJLBjI', NULL, 'movie', NULL, NULL, NULL),
+('Zindagi Na Milegi Dobara', 'Three childhood friends — the workaholic Arjun, the commitment-phobic Imran, and the lovable Kabir — reunite for a pre-wedding bachelor road trip across Spain. As they experience skydiving, scuba diving, and the Running of the Bulls, each man confronts the fears and regrets that have held him back. Amidst the breathtaking Spanish landscape, laughter, poetry, and a few tears, they rediscover what it means to truly live before it''s too late.', 2011, 155, false, NULL, 'https://www.youtube.com/watch?v=AJ5daBaJr_I', NULL, 'movie', NULL, NULL, NULL),
+('Andhadhun', 'A seemingly blind pianist named Akash witnesses a shocking crime that plunges him into a web of murder, deception, and dark comedy in Mumbai. As the bodies pile up and the lies multiply, nothing is as it appears — including Akash''s blindness. An endlessly twisty neo-noir thriller where every character has a hidden agenda, every revelation leads to another deception, and the audience is kept guessing until the brilliantly ambiguous final frame.', 2018, 139, false, NULL, 'https://www.youtube.com/watch?v=2iVOJYa3pUI', NULL, 'movie', NULL, NULL, NULL),
+('Tumbbad', 'Spanning the decades between British India and the post-independence era, Tumbbad follows the Vinayak Rao lineage and their cursed ancestral village where a mythological demon named Hastar guards an endless treasure of gold coins. As Vinayak becomes consumed by greed and makes increasingly dangerous visits to the demon''s womb-like underground lair, the film weaves a haunting parable about the insatiable nature of human desire. India''s most visually stunning horror-fantasy ever made.', 2018, 104, false, NULL, 'https://www.youtube.com/watch?v=sN75MPxgvX8', NULL, 'movie', NULL, NULL, NULL),
+('PK', 'An alien lands on Earth and has his remote control — his only way home — stolen the moment he arrives. Stranded in Rajasthan, India, the alien (dubbed "PK" by locals for his drunk-like behavior) embarks on a journey to recover his device, discovering along the way the absurdities of organized religion, the exploitation of blind faith, and the beautiful simplicity of human love. A sharp social satire wrapped in a heartwarming comedy that challenged India to question its gods-men and godless men alike.', 2014, 153, false, NULL, 'https://www.youtube.com/watch?v=SOXiLhHgS_o', NULL, 'movie', NULL, NULL, NULL),
+('Gully Boy', 'Inspired by the true stories of Mumbai street rappers Divine and Naezy, Gully Boy follows Murad Ahmed, a young man from the Dharavi slum who discovers hip-hop as his voice of rebellion against poverty, class discrimination, and a life he never chose. Against the wishes of his conservative family and the crushing weight of his circumstances, Murad channels the anger and dreams of an entire generation into lyrics that shake the underground rap scene and prove that talent can emerge from the most unlikely places.', 2019, 154, false, NULL, 'https://www.youtube.com/watch?v=jFGKJBPFdUA', NULL, 'movie', NULL, NULL, NULL),
+('Barfi!', 'Barfi, a hearing and speech-impaired young man from Darjeeling with an irrepressible zest for life, finds himself at the center of a bittersweet love triangle involving Shruti, a beautiful woman engaged to another man, and Jhilmil, an autistic girl with whom he shares a wordless but profound bond. Told through flashbacks as a kidnapping investigation unfolds, Barfi! is a celebration of the human spirit''s ability to find joy, love, and connection beyond the barriers of words and convention.', 2012, 151, false, NULL, 'https://www.youtube.com/watch?v=LaIQhj0hLNE', NULL, 'movie', NULL, NULL, NULL),
+('Article 15', 'Inspired by real events, IAS officer Ayan Ranjan arrives in a backwater Uttar Pradesh district and is confronted by the horrific gang-rape and murder of two Dalit teenage girls. As he peels back layers of entrenched caste discrimination, political corruption, and systemic injustice in rural India, Ayan — an upper-caste outsider — must decide how far he is willing to go to deliver justice in a system designed to protect the powerful. A searing indictment of India''s deepest social wound.', 2019, 130, false, NULL, 'https://www.youtube.com/watch?v=7-icNz1AS6A', NULL, 'movie', NULL, NULL, NULL),
+('Queen', 'Rani Mehra, a sheltered, timid Delhi girl, is devastated when her fiancé calls off their wedding just days before the ceremony. In an act of unexpected courage, she decides to go on their European honeymoon alone. What follows is a transformative journey through Paris and Amsterdam where Rani discovers her own strength, independence, and self-worth — evolving from a heartbroken bride-to-be into a confident woman who realizes she never needed anyone''s permission to live her life fully.', 2014, 146, false, NULL, 'https://www.youtube.com/watch?v=KGC6vl3lzf0', NULL, 'movie', NULL, NULL, NULL)
+ON CONFLICT DO NOTHING;
+
+-- ============================
+-- HINDI SERIES
+-- ============================
+INSERT INTO movies (title, description, release_year, duration, has_oscar, poster_url, trailer_url, netflix_url, content_type, seasons, total_episodes, episodes_per_season) VALUES
+('Sacred Games', 'When Mumbai police inspector Sartaj Singh receives a cryptic phone call from the long-vanished gangster Ganesh Gaitonde, he is drawn into a web of corruption, deceit, and religious fanaticism that threatens to destroy the entire city in 25 days. As Sartaj races against time in the present, Gaitonde''s narration unspools the blood-soaked history of Mumbai''s criminal underworld across four decades — a sprawling epic of power, betrayal, and apocalyptic prophecy. India''s first truly world-class prestige television.', 2018, 50, false, NULL, 'https://www.youtube.com/watch?v=jFMIKhBBp4s', 'https://www.netflix.com/title/80115328', 'series', 2, 16, '[{"season":1,"episodes":8},{"season":2,"episodes":8}]'::jsonb),
+('Mirzapur', 'In the lawless badlands of Uttar Pradesh, the reign of carpet exporter and underworld don Akhandanand Tripathi (Kaleen Bhaiya) is challenged when two college-going brothers, Guddu and Bablu Pandit, are drawn into the violent criminal empire after a wedding shootout. What follows is a ruthless saga of power, ambition, and revenge across three seasons as alliances shift, families are torn apart, and control of Mirzapur becomes a blood-drenched game where loyalty is a luxury no one can afford.', 2018, 48, false, NULL, 'https://www.youtube.com/watch?v=pVNoCCTqpc8', NULL, 'series', 3, 29, '[{"season":1,"episodes":9},{"season":2,"episodes":10},{"season":3,"episodes":10}]'::jsonb),
+('Panchayat', 'Abhishek Tripathi, an engineering graduate unable to find a corporate job, reluctantly accepts a position as the secretary of a panchayat (village council) in the remote village of Phulera, Uttar Pradesh. What begins as a temporary compromise becomes an unexpectedly heartwarming journey as Abhishek navigates rural politics, eccentric villagers, connectivity issues, and the vast gulf between urban expectations and village realities. A gentle, slice-of-life comedy that finds extraordinary humor in ordinary Indian village life.', 2020, 35, false, NULL, 'https://www.youtube.com/watch?v=pVNoCCTqpc8', NULL, 'series', 3, 24, '[{"season":1,"episodes":8},{"season":2,"episodes":8},{"season":3,"episodes":8}]'::jsonb),
+('Family Man', 'Srikant Tiwari is a middle-class man who works as a senior officer for the Threat Analysis and Surveillance Cell (TASC), a fictional branch of India''s National Investigation Agency. Behind his mundane suburban exterior lies a world of anti-terror operations, intelligence gathering, and life-threatening missions. Balancing a crumbling marriage, demanding teenagers, and saving the nation from catastrophic threats, Srikant embodies the impossible duality of an Indian family man who also happens to be a spy.', 2019, 45, false, NULL, 'https://www.youtube.com/watch?v=Ji1Fkl1u-dQ', NULL, 'series', 2, 19, '[{"season":1,"episodes":10},{"season":2,"episodes":9}]'::jsonb),
+('Scam 1992', 'The riveting true story of Harshad Mehta, a stockbroker from a modest Mumbai family who single-handedly manipulated the Indian banking system and stock market in the late 1980s and early 1990s, orchestrating the largest financial scam in Indian history worth over ₹5,000 crore. From his humble beginnings selling cement to becoming the "Big Bull" of Dalal Street, to his dramatic public exposure by journalist Sucheta Dalal and ultimate downfall — a story of audacious ambition that shook India''s financial foundations.', 2020, 55, false, NULL, 'https://www.youtube.com/watch?v=4JbpQoEjmR4', NULL, 'series', 1, 10, '[{"season":1,"episodes":10}]'::jsonb),
+('Kota Factory', 'In the pressure-cooker city of Kota, Rajasthan — India''s coaching capital where hundreds of thousands of teenagers prepare for the brutally competitive IIT entrance exams — the series follows Vaibhav Pandey, a wide-eyed student navigating the relentless academic grind, toxic competition, and suffocating expectations. His life changes when he encounters Jeetu Bhaiya, an unconventional physics teacher who teaches not just formulas but life lessons. Shot entirely in black and white, it is a raw portrait of India''s high-stakes education system.', 2019, 40, false, NULL, 'https://www.youtube.com/watch?v=AhmGS4dp3AA', NULL, 'series', 2, 11, '[{"season":1,"episodes":5},{"season":2,"episodes":5}]'::jsonb),
+('Paatal Lok', 'When four suspects are arrested for the attempted assassination of a prominent journalist, down-and-out Delhi police inspector Hathiram Chaudhary catches the case of a lifetime. As his investigation spirals from the elite corridors of power (Swarg Lok) through the bustling middle class (Dharti Lok) and into the darkest underbelly of society (Paatal Lok), the case unravels a web of caste, politics, media, and institutionalized violence that mirrors the invisible hierarchies of modern India.', 2020, 45, false, NULL, 'https://www.youtube.com/watch?v=PEzTkgSmXLA', NULL, 'series', 1, 9, '[{"season":1,"episodes":9}]'::jsonb),
+('Delhi Crime', 'Based on the investigation of the horrific December 2012 Nirbhaya gang rape case in Delhi, this series follows DCP Vartika Chaturvedi and her team as they race against intense public outrage, media frenzy, and political pressure to track down the six perpetrators within 72 hours. A procedural that avoids sensationalizing the crime itself, instead focusing on the tireless police work, emotional toll, and systemic challenges faced by a determined woman leading a hunt that gripped an entire nation.', 2019, 45, false, NULL, 'https://www.youtube.com/watch?v=jNuKwlKGp_g', 'https://www.netflix.com/title/81002370', 'series', 2, 10, '[{"season":1,"episodes":5},{"season":2,"episodes":5}]'::jsonb)
+ON CONFLICT DO NOTHING;
+
+-- ============================
+-- HINDI MOVIE GENRES
+-- ============================
+INSERT INTO genres (genre_name) VALUES ('Bollywood') ON CONFLICT (genre_name) DO NOTHING;
+
+INSERT INTO movie_genres (movie_id, genre_id) VALUES
+-- 3 Idiots
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Comedy')),
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Dangal
+((SELECT movie_id FROM movies WHERE title = 'Dangal' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Dangal' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Action')),
+((SELECT movie_id FROM movies WHERE title = 'Dangal' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Gangs of Wasseypur
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Crime')),
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Action')),
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Lagaan
+((SELECT movie_id FROM movies WHERE title = 'Lagaan' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Lagaan' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Adventure')),
+((SELECT movie_id FROM movies WHERE title = 'Lagaan' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Dil Chahta Hai
+((SELECT movie_id FROM movies WHERE title = 'Dil Chahta Hai' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Comedy')),
+((SELECT movie_id FROM movies WHERE title = 'Dil Chahta Hai' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Dil Chahta Hai' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Romance')),
+((SELECT movie_id FROM movies WHERE title = 'Dil Chahta Hai' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Rang De Basanti
+((SELECT movie_id FROM movies WHERE title = 'Rang De Basanti' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Rang De Basanti' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Taare Zameen Par
+((SELECT movie_id FROM movies WHERE title = 'Taare Zameen Par' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Taare Zameen Par' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Zindagi Na Milegi Dobara
+((SELECT movie_id FROM movies WHERE title = 'Zindagi Na Milegi Dobara' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Comedy')),
+((SELECT movie_id FROM movies WHERE title = 'Zindagi Na Milegi Dobara' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Zindagi Na Milegi Dobara' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Adventure')),
+((SELECT movie_id FROM movies WHERE title = 'Zindagi Na Milegi Dobara' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Andhadhun
+((SELECT movie_id FROM movies WHERE title = 'Andhadhun' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Thriller')),
+((SELECT movie_id FROM movies WHERE title = 'Andhadhun' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Crime')),
+((SELECT movie_id FROM movies WHERE title = 'Andhadhun' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Comedy')),
+((SELECT movie_id FROM movies WHERE title = 'Andhadhun' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Tumbbad
+((SELECT movie_id FROM movies WHERE title = 'Tumbbad' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Horror')),
+((SELECT movie_id FROM movies WHERE title = 'Tumbbad' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Fantasy')),
+((SELECT movie_id FROM movies WHERE title = 'Tumbbad' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- PK
+((SELECT movie_id FROM movies WHERE title = 'PK' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Comedy')),
+((SELECT movie_id FROM movies WHERE title = 'PK' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'PK' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Gully Boy
+((SELECT movie_id FROM movies WHERE title = 'Gully Boy' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Gully Boy' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Barfi!
+((SELECT movie_id FROM movies WHERE title = 'Barfi!' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Comedy')),
+((SELECT movie_id FROM movies WHERE title = 'Barfi!' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Romance')),
+((SELECT movie_id FROM movies WHERE title = 'Barfi!' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Barfi!' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Article 15
+((SELECT movie_id FROM movies WHERE title = 'Article 15' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Article 15' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Thriller')),
+((SELECT movie_id FROM movies WHERE title = 'Article 15' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Crime')),
+((SELECT movie_id FROM movies WHERE title = 'Article 15' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Queen
+((SELECT movie_id FROM movies WHERE title = 'Queen' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Comedy')),
+((SELECT movie_id FROM movies WHERE title = 'Queen' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Queen' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Sacred Games
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Crime')),
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Thriller')),
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Mirzapur
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Crime')),
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Action')),
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Thriller')),
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Panchayat
+((SELECT movie_id FROM movies WHERE title = 'Panchayat' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Comedy')),
+((SELECT movie_id FROM movies WHERE title = 'Panchayat' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Panchayat' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Family Man
+((SELECT movie_id FROM movies WHERE title = 'Family Man' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Action')),
+((SELECT movie_id FROM movies WHERE title = 'Family Man' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Thriller')),
+((SELECT movie_id FROM movies WHERE title = 'Family Man' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Family Man' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Scam 1992
+((SELECT movie_id FROM movies WHERE title = 'Scam 1992' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Scam 1992' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Crime')),
+((SELECT movie_id FROM movies WHERE title = 'Scam 1992' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Thriller')),
+((SELECT movie_id FROM movies WHERE title = 'Scam 1992' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Kota Factory
+((SELECT movie_id FROM movies WHERE title = 'Kota Factory' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Kota Factory' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Paatal Lok
+((SELECT movie_id FROM movies WHERE title = 'Paatal Lok' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Crime')),
+((SELECT movie_id FROM movies WHERE title = 'Paatal Lok' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Thriller')),
+((SELECT movie_id FROM movies WHERE title = 'Paatal Lok' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Paatal Lok' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood')),
+-- Delhi Crime
+((SELECT movie_id FROM movies WHERE title = 'Delhi Crime' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Crime')),
+((SELECT movie_id FROM movies WHERE title = 'Delhi Crime' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Drama')),
+((SELECT movie_id FROM movies WHERE title = 'Delhi Crime' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Thriller')),
+((SELECT movie_id FROM movies WHERE title = 'Delhi Crime' LIMIT 1), (SELECT genre_id FROM genres WHERE genre_name = 'Bollywood'))
+ON CONFLICT DO NOTHING;
+
+-- ============================
+-- HINDI MOVIES & SERIES — PERSONS (Directors, Writers, Cast)
+-- ============================
+INSERT INTO persons (movie_id, name, role, character_name, bio, photo_url) VALUES
+-- 3 Idiots
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), 'Rajkumar Hirani', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), 'Rajkumar Hirani', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), 'Abhijat Joshi', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), 'Aamir Khan', 'actor', 'Ranchoddas "Rancho" Chanchad', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), 'R. Madhavan', 'actor', 'Farhan Qureshi', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), 'Sharman Joshi', 'actor', 'Raju Rastogi', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), 'Kareena Kapoor', 'actor', 'Pia Sahastrabuddhe', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), 'Boman Irani', 'actor', 'Viru Sahastrabuddhe (Virus)', NULL, NULL),
+-- Dangal
+((SELECT movie_id FROM movies WHERE title = 'Dangal' LIMIT 1), 'Nitesh Tiwari', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Dangal' LIMIT 1), 'Nitesh Tiwari', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Dangal' LIMIT 1), 'Piyush Gupta', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Dangal' LIMIT 1), 'Aamir Khan', 'actor', 'Mahavir Singh Phogat', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Dangal' LIMIT 1), 'Fatima Sana Shaikh', 'actor', 'Geeta Phogat', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Dangal' LIMIT 1), 'Sanya Malhotra', 'actor', 'Babita Kumari', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Dangal' LIMIT 1), 'Sakshi Tanwar', 'actor', 'Daya Kaur', NULL, NULL),
+-- Gangs of Wasseypur
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), 'Anurag Kashyap', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), 'Anurag Kashyap', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), 'Zeishan Quadri', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), 'Manoj Bajpayee', 'actor', 'Sardar Khan', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), 'Nawazuddin Siddiqui', 'actor', 'Faizal Khan', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), 'Tigmanshu Dhulia', 'actor', 'Ramadhir Singh', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), 'Richa Chadha', 'actor', 'Nagma Khatoon', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), 'Pankaj Tripathi', 'actor', 'Sultan Qureshi', NULL, NULL),
+-- Lagaan
+((SELECT movie_id FROM movies WHERE title = 'Lagaan' LIMIT 1), 'Ashutosh Gowariker', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Lagaan' LIMIT 1), 'Ashutosh Gowariker', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Lagaan' LIMIT 1), 'Aamir Khan', 'actor', 'Bhuvan', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Lagaan' LIMIT 1), 'Gracy Singh', 'actor', 'Gauri', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Lagaan' LIMIT 1), 'Rachel Shelley', 'actor', 'Elizabeth Russell', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Lagaan' LIMIT 1), 'Paul Blackthorne', 'actor', 'Captain Andrew Russell', NULL, NULL),
+-- Dil Chahta Hai
+((SELECT movie_id FROM movies WHERE title = 'Dil Chahta Hai' LIMIT 1), 'Farhan Akhtar', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Dil Chahta Hai' LIMIT 1), 'Farhan Akhtar', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Dil Chahta Hai' LIMIT 1), 'Aamir Khan', 'actor', 'Akash Malhotra', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Dil Chahta Hai' LIMIT 1), 'Saif Ali Khan', 'actor', 'Sameer Mulchandani', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Dil Chahta Hai' LIMIT 1), 'Akshaye Khanna', 'actor', 'Siddharth Sinha', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Dil Chahta Hai' LIMIT 1), 'Preity Zinta', 'actor', 'Shalini', NULL, NULL),
+-- Rang De Basanti
+((SELECT movie_id FROM movies WHERE title = 'Rang De Basanti' LIMIT 1), 'Rakeysh Omprakash Mehra', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Rang De Basanti' LIMIT 1), 'Rakeysh Omprakash Mehra', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Rang De Basanti' LIMIT 1), 'Rensil D''Silva', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Rang De Basanti' LIMIT 1), 'Aamir Khan', 'actor', 'Daljeet "DJ" Singh', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Rang De Basanti' LIMIT 1), 'Siddharth', 'actor', 'Karan Singhania', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Rang De Basanti' LIMIT 1), 'Sharman Joshi', 'actor', 'Sukhi Ram', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Rang De Basanti' LIMIT 1), 'Soha Ali Khan', 'actor', 'Sonia', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Rang De Basanti' LIMIT 1), 'R. Madhavan', 'actor', 'Flight Lt. Ajay Rathod', NULL, NULL),
+-- Taare Zameen Par
+((SELECT movie_id FROM movies WHERE title = 'Taare Zameen Par' LIMIT 1), 'Aamir Khan', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Taare Zameen Par' LIMIT 1), 'Amole Gupte', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Taare Zameen Par' LIMIT 1), 'Aamir Khan', 'actor', 'Ram Shankar Nikumbh', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Taare Zameen Par' LIMIT 1), 'Darsheel Safary', 'actor', 'Ishaan Nandkishore Awasthi', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Taare Zameen Par' LIMIT 1), 'Tisca Chopra', 'actor', 'Maya Awasthi', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Taare Zameen Par' LIMIT 1), 'Vipin Sharma', 'actor', 'Nandkishore Awasthi', NULL, NULL),
+-- Zindagi Na Milegi Dobara
+((SELECT movie_id FROM movies WHERE title = 'Zindagi Na Milegi Dobara' LIMIT 1), 'Zoya Akhtar', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Zindagi Na Milegi Dobara' LIMIT 1), 'Zoya Akhtar', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Zindagi Na Milegi Dobara' LIMIT 1), 'Reema Kagti', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Zindagi Na Milegi Dobara' LIMIT 1), 'Hrithik Roshan', 'actor', 'Arjun Saluja', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Zindagi Na Milegi Dobara' LIMIT 1), 'Farhan Akhtar', 'actor', 'Imran Qureshi', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Zindagi Na Milegi Dobara' LIMIT 1), 'Abhay Deol', 'actor', 'Kabir Dewan', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Zindagi Na Milegi Dobara' LIMIT 1), 'Katrina Kaif', 'actor', 'Laila', NULL, NULL),
+-- Andhadhun
+((SELECT movie_id FROM movies WHERE title = 'Andhadhun' LIMIT 1), 'Sriram Raghavan', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Andhadhun' LIMIT 1), 'Sriram Raghavan', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Andhadhun' LIMIT 1), 'Arijit Biswas', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Andhadhun' LIMIT 1), 'Ayushmann Khurrana', 'actor', 'Akash', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Andhadhun' LIMIT 1), 'Tabu', 'actor', 'Simi Sinha', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Andhadhun' LIMIT 1), 'Radhika Apte', 'actor', 'Sophie', NULL, NULL),
+-- Tumbbad
+((SELECT movie_id FROM movies WHERE title = 'Tumbbad' LIMIT 1), 'Rahi Anil Barve', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Tumbbad' LIMIT 1), 'Adesh Prasad', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Tumbbad' LIMIT 1), 'Mitesh Shah', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Tumbbad' LIMIT 1), 'Adesh Prasad', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Tumbbad' LIMIT 1), 'Sohum Shah', 'actor', 'Vinayak Rao', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Tumbbad' LIMIT 1), 'Jyoti Malshe', 'actor', 'Vinayak''s Mother', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Tumbbad' LIMIT 1), 'Mohammad Samad', 'actor', 'Pandurang', NULL, NULL),
+-- PK
+((SELECT movie_id FROM movies WHERE title = 'PK' LIMIT 1), 'Rajkumar Hirani', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'PK' LIMIT 1), 'Rajkumar Hirani', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'PK' LIMIT 1), 'Abhijat Joshi', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'PK' LIMIT 1), 'Aamir Khan', 'actor', 'PK', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'PK' LIMIT 1), 'Anushka Sharma', 'actor', 'Jagat Janani "Jaggu"', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'PK' LIMIT 1), 'Sushant Singh Rajput', 'actor', 'Sarfaraz Yousuf', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'PK' LIMIT 1), 'Sanjay Dutt', 'actor', 'Bhairon Singh', NULL, NULL),
+-- Gully Boy
+((SELECT movie_id FROM movies WHERE title = 'Gully Boy' LIMIT 1), 'Zoya Akhtar', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Gully Boy' LIMIT 1), 'Zoya Akhtar', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Gully Boy' LIMIT 1), 'Reema Kagti', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Gully Boy' LIMIT 1), 'Ranveer Singh', 'actor', 'Murad Ahmed', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Gully Boy' LIMIT 1), 'Alia Bhatt', 'actor', 'Safeena Firdausi', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Gully Boy' LIMIT 1), 'Siddhant Chaturvedi', 'actor', 'MC Sher', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Gully Boy' LIMIT 1), 'Kalki Koechlin', 'actor', 'Sky', NULL, NULL),
+-- Barfi!
+((SELECT movie_id FROM movies WHERE title = 'Barfi!' LIMIT 1), 'Anurag Basu', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Barfi!' LIMIT 1), 'Anurag Basu', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Barfi!' LIMIT 1), 'Ranbir Kapoor', 'actor', 'Murphy "Barfi" Johnson', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Barfi!' LIMIT 1), 'Priyanka Chopra', 'actor', 'Jhilmil Chatterjee', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Barfi!' LIMIT 1), 'Ileana D''Cruz', 'actor', 'Shruti Ghosh', NULL, NULL),
+-- Article 15
+((SELECT movie_id FROM movies WHERE title = 'Article 15' LIMIT 1), 'Anubhav Sinha', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Article 15' LIMIT 1), 'Anubhav Sinha', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Article 15' LIMIT 1), 'Gaurav Solanki', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Article 15' LIMIT 1), 'Ayushmann Khurrana', 'actor', 'IAS Ayan Ranjan', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Article 15' LIMIT 1), 'Sayani Gupta', 'actor', 'Gaura', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Article 15' LIMIT 1), 'Manoj Pahwa', 'actor', 'Brahmadatt', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Article 15' LIMIT 1), 'Kumud Mishra', 'actor', 'Nishad', NULL, NULL),
+-- Queen
+((SELECT movie_id FROM movies WHERE title = 'Queen' LIMIT 1), 'Vikas Bahl', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Queen' LIMIT 1), 'Vikas Bahl', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Queen' LIMIT 1), 'Kangana Ranaut', 'actor', 'Rani Mehra', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Queen' LIMIT 1), 'Rajkummar Rao', 'actor', 'Vijay', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Queen' LIMIT 1), 'Lisa Haydon', 'actor', 'Vijayalakshmi', NULL, NULL),
+-- Sacred Games
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' LIMIT 1), 'Anurag Kashyap', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' LIMIT 1), 'Vikramaditya Motwane', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' LIMIT 1), 'Varun Grover', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' LIMIT 1), 'Vikram Chandra', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' LIMIT 1), 'Saif Ali Khan', 'actor', 'Inspector Sartaj Singh', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' LIMIT 1), 'Nawazuddin Siddiqui', 'actor', 'Ganesh Gaitonde', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' LIMIT 1), 'Radhika Apte', 'actor', 'Anjali Mathur', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' LIMIT 1), 'Pankaj Tripathi', 'actor', 'Guruji', NULL, NULL),
+-- Mirzapur
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' LIMIT 1), 'Karan Anshuman', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' LIMIT 1), 'Gurmmeet Singh', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' LIMIT 1), 'Puneet Krishna', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' LIMIT 1), 'Pankaj Tripathi', 'actor', 'Akhandanand Tripathi (Kaleen Bhaiya)', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' LIMIT 1), 'Ali Fazal', 'actor', 'Guddu Pandit', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' LIMIT 1), 'Divyenndu', 'actor', 'Munna Tripathi', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' LIMIT 1), 'Shweta Tripathi', 'actor', 'Golu Gupta', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' LIMIT 1), 'Rasika Dugal', 'actor', 'Beena Tripathi', NULL, NULL),
+-- Panchayat
+((SELECT movie_id FROM movies WHERE title = 'Panchayat' LIMIT 1), 'Deepak Kumar Mishra', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Panchayat' LIMIT 1), 'Chandan Kumar', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Panchayat' LIMIT 1), 'Jitendra Kumar', 'actor', 'Abhishek Tripathi', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Panchayat' LIMIT 1), 'Neena Gupta', 'actor', 'Manju Devi', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Panchayat' LIMIT 1), 'Raghubir Yadav', 'actor', 'Brij Bhushan Dubey', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Panchayat' LIMIT 1), 'Faisal Malik', 'actor', 'Prahlad Pandey', NULL, NULL),
+-- Family Man
+((SELECT movie_id FROM movies WHERE title = 'Family Man' LIMIT 1), 'Raj Nidimoru', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Family Man' LIMIT 1), 'Krishna D.K.', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Family Man' LIMIT 1), 'Raj Nidimoru', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Family Man' LIMIT 1), 'Krishna D.K.', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Family Man' LIMIT 1), 'Suman Kumar', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Family Man' LIMIT 1), 'Manoj Bajpayee', 'actor', 'Srikant Tiwari', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Family Man' LIMIT 1), 'Samantha Ruth Prabhu', 'actor', 'Raji', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Family Man' LIMIT 1), 'Priyamani', 'actor', 'Suchitra Tiwari', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Family Man' LIMIT 1), 'Sharib Hashmi', 'actor', 'JK Talpade', NULL, NULL),
+-- Scam 1992
+((SELECT movie_id FROM movies WHERE title = 'Scam 1992' LIMIT 1), 'Hansal Mehta', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Scam 1992' LIMIT 1), 'Sumit Purohit', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Scam 1992' LIMIT 1), 'Saurav Dey', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Scam 1992' LIMIT 1), 'Pratik Gandhi', 'actor', 'Harshad Mehta', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Scam 1992' LIMIT 1), 'Shreya Dhanwanthary', 'actor', 'Sucheta Dalal', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Scam 1992' LIMIT 1), 'Hemant Kher', 'actor', 'Ashwin Mehta', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Scam 1992' LIMIT 1), 'Satish Kaushik', 'actor', 'Manu Mundra', NULL, NULL),
+-- Kota Factory
+((SELECT movie_id FROM movies WHERE title = 'Kota Factory' LIMIT 1), 'Raghav Subbu', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Kota Factory' LIMIT 1), 'Saurabh Khanna', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Kota Factory' LIMIT 1), 'Jitendra Kumar', 'actor', 'Jeetu Bhaiya', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Kota Factory' LIMIT 1), 'Mayur More', 'actor', 'Vaibhav Pandey', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Kota Factory' LIMIT 1), 'Ranjan Raj', 'actor', 'Balmukund Meena', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Kota Factory' LIMIT 1), 'Alam Khan', 'actor', 'Uday Gupta', NULL, NULL),
+-- Paatal Lok
+((SELECT movie_id FROM movies WHERE title = 'Paatal Lok' LIMIT 1), 'Avinash Arun', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Paatal Lok' LIMIT 1), 'Prosit Roy', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Paatal Lok' LIMIT 1), 'Sudip Sharma', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Paatal Lok' LIMIT 1), 'Jaideep Ahlawat', 'actor', 'Inspector Hathiram Chaudhary', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Paatal Lok' LIMIT 1), 'Neeraj Kabi', 'actor', 'Sanjeev Mehra', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Paatal Lok' LIMIT 1), 'Gul Panag', 'actor', 'Renu Chaudhary', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Paatal Lok' LIMIT 1), 'Abhishek Banerjee', 'actor', 'Hathoda Tyagi', NULL, NULL),
+-- Delhi Crime
+((SELECT movie_id FROM movies WHERE title = 'Delhi Crime' LIMIT 1), 'Richie Mehta', 'director', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Delhi Crime' LIMIT 1), 'Richie Mehta', 'writer', NULL, NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Delhi Crime' LIMIT 1), 'Shefali Shah', 'actor', 'DCP Vartika Chaturvedi', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Delhi Crime' LIMIT 1), 'Rasika Dugal', 'actor', 'Neeti Singh', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Delhi Crime' LIMIT 1), 'Adil Hussain', 'actor', 'Kumar Vijay', NULL, NULL),
+((SELECT movie_id FROM movies WHERE title = 'Delhi Crime' LIMIT 1), 'Rajesh Tailang', 'actor', 'Bhupendra Singh', NULL, NULL);
+
+-- ============================
+-- HINDI MOVIES & SERIES — REVIEWS
+-- ============================
+INSERT INTO reviews (movie_id, user_id, rating, review_text) VALUES
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), (SELECT user_id FROM users WHERE username = 'CinematicCritic'), 9.5, 'Rajkumar Hirani delivered a masterpiece that made India laugh, cry, and question its entire education system in one sitting. Aamir Khan is electrifying as Rancho. "All Izz Well" became a national mantra. The balance between comedy and genuine social commentary is flawless.'),
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), (SELECT user_id FROM users WHERE username = 'FilmFanatic92'), 9.0, 'A film that resonated with every Indian student who ever felt suffocated by the system. The friendship between the three leads feels genuine. Boman Irani as Virus is perfectly cast. The climax at Ladakh is breathtakingly beautiful.'),
+((SELECT movie_id FROM movies WHERE title = '3 Idiots' LIMIT 1), (SELECT user_id FROM users WHERE username = 'BingeWatcher101'), 9.2, 'Watched this with my family and we all ended up in tears by the end. It manages to be hilarious while delivering a powerful message about following your passion. The "Aal Izz Well" scene during the rainstorm is pure cinema magic.'),
+((SELECT movie_id FROM movies WHERE title = 'Dangal' LIMIT 1), (SELECT user_id FROM users WHERE username = 'PopcornPundit'), 9.0, 'Aamir Khan''s physical transformation alone deserves applause, but the real stars are Fatima Sana Shaikh and Sanya Malhotra. The wrestling sequences are shot with incredible intensity. A story about smashing gender barriers that actually makes you cheer out loud.'),
+((SELECT movie_id FROM movies WHERE title = 'Dangal' LIMIT 1), (SELECT user_id FROM users WHERE username = 'ScreenSavant'), 9.3, 'Based on a true story that''s more inspiring than any fiction. The father-daughter dynamic is beautifully portrayed. The Commonwealth Games climax had the entire theater on its feet. Pritam''s "Dangal Dangal" is an anthem.'),
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), (SELECT user_id FROM users WHERE username = 'CinematicCritic'), 9.5, 'Anurag Kashyap''s magnum opus. A 5-hour gangland epic that never drags for a single minute. Manoj Bajpayee, Nawazuddin Siddiqui, and Pankaj Tripathi deliver career-defining performances. The soundtrack by Sneha Khanwalkar is unlike anything Bollywood has ever heard.'),
+((SELECT movie_id FROM movies WHERE title = 'Gangs of Wasseypur' LIMIT 1), (SELECT user_id FROM users WHERE username = 'TheFrameJunkie'), 9.2, 'India''s answer to The Godfather, told with raw, kinetic energy. The generational saga structure is ambitious and perfectly executed. Every character — from Sardar Khan to Faizal to the ruthless Ramadhir Singh — is unforgettable. Pure cinematic adrenaline.'),
+((SELECT movie_id FROM movies WHERE title = 'Andhadhun' LIMIT 1), (SELECT user_id FROM users WHERE username = 'ReelTalkReviews'), 9.0, 'Sriram Raghavan crafted the most unpredictable Indian thriller ever. Every time you think you''ve figured it out, the film pulls the rug. Ayushmann Khurrana is brilliant, and Tabu is terrifyingly good as the femme fatale. That ending will spark debates for years.'),
+((SELECT movie_id FROM movies WHERE title = 'Andhadhun' LIMIT 1), (SELECT user_id FROM users WHERE username = 'MovieMaven'), 9.3, 'A masterclass in dark comedy and suspense. The tone shifts are daring — from laugh-out-loud funny to genuinely disturbing in seconds. The piano recital scenes are exquisitely shot. This is proof that Indian cinema can match anyone in the thriller genre.'),
+((SELECT movie_id FROM movies WHERE title = 'Tumbbad' LIMIT 1), (SELECT user_id FROM users WHERE username = 'CinematicCritic'), 9.0, 'Visually the most stunning Indian film ever made. The rain-soaked village, the creature design, the underground lair — every frame is a painting. It''s a horror film, a period drama, and a morality tale about greed all at once. Bollywood has never attempted anything this ambitious in the genre.'),
+((SELECT movie_id FROM movies WHERE title = 'Tumbbad' LIMIT 1), (SELECT user_id FROM users WHERE username = 'TheFrameJunkie'), 9.2, 'Indian mythology meets body horror in this genre-defying masterpiece. The practical effects are extraordinary for an Indian film. Sohum Shah carries the film with a performance that evolves across decades. A true cult classic that deserves a global audience.'),
+((SELECT movie_id FROM movies WHERE title = 'Gully Boy' LIMIT 1), (SELECT user_id FROM users WHERE username = 'PopcornPundit'), 8.5, 'Ranveer Singh disappears into the role of Murad — you forget you are watching a Bollywood star. Alia Bhatt steals every scene as the fiery Safeena. The rap performances are authentic and electrifying. Zoya Akhtar gave India its 8 Mile, and it''s magnificent.'),
+((SELECT movie_id FROM movies WHERE title = 'Gully Boy' LIMIT 1), (SELECT user_id FROM users WHERE username = 'ScreenSavant'), 8.8, 'A love letter to Mumbai''s underground rap scene. The music — especially "Apna Time Aayega" — became a cultural phenomenon. Siddhant Chaturvedi as MC Sher is a star-making turn. The slum cinematography captures both the grit and beauty of Dharavi.'),
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' AND content_type = 'series' LIMIT 1), (SELECT user_id FROM users WHERE username = 'CinematicCritic'), 9.0, 'India''s first truly binge-worthy series. Nawazuddin Siddiqui as Gaitonde is magnetic — his narration carries the show with Scorsese-level voiceover. Saif Ali Khan''s restrained Sartaj is the perfect foil. Season 1 is near-perfect television. The cinematography of Mumbai''s underbelly is extraordinary.'),
+((SELECT movie_id FROM movies WHERE title = 'Sacred Games' AND content_type = 'series' LIMIT 1), (SELECT user_id FROM users WHERE username = 'ReelTalkReviews'), 8.5, 'Anurag Kashyap and Vikramaditya Motwane brought their combined filmmaking prowess to the small screen and created something historic. The parallel timelines — Sartaj''s present and Gaitonde''s past — are masterfully intercut. Pankaj Tripathi''s Guruji in Season 2 is chilling.'),
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' AND content_type = 'series' LIMIT 1), (SELECT user_id FROM users WHERE username = 'PopcornPundit'), 8.5, 'Pankaj Tripathi as Kaleen Bhaiya is menacingly calm perfection. Divyenndu''s Munna is chaotically entertaining. The show combines brutal violence with dark humor in a way that''s uniquely Indian. The UP setting feels authentic and lived-in.'),
+((SELECT movie_id FROM movies WHERE title = 'Mirzapur' AND content_type = 'series' LIMIT 1), (SELECT user_id FROM users WHERE username = 'BingeWatcher101'), 8.0, 'India''s answer to Narcos, set in the ganglands of Uttar Pradesh. Ali Fazal''s transformation from college boy to gangster is compelling. The power dynamics between families keep you on edge. Season 2''s finale had me screaming at the screen.'),
+((SELECT movie_id FROM movies WHERE title = 'Panchayat' AND content_type = 'series' LIMIT 1), (SELECT user_id FROM users WHERE username = 'FilmFanatic92'), 9.0, 'The most heartwarming Indian show ever made. Jitendra Kumar perfectly captures the urban-educated fish-out-of-water in a rural setting. The humor is gentle, organic, and genuinely funny. Neena Gupta and Raghubir Yadav are national treasures.'),
+((SELECT movie_id FROM movies WHERE title = 'Panchayat' AND content_type = 'series' LIMIT 1), (SELECT user_id FROM users WHERE username = 'MovieMaven'), 9.2, 'Panchayat proves you don''t need violence or shock value to make compelling television. The slice-of-life storytelling, the quirky villagers, the wifi struggles — it''s all so relatable. Season 3 elevated it to masterpiece status. Phulera feels like home.'),
+((SELECT movie_id FROM movies WHERE title = 'Scam 1992' AND content_type = 'series' LIMIT 1), (SELECT user_id FROM users WHERE username = 'CinematicCritic'), 9.5, 'Pratik Gandhi delivers a powerhouse performance as Harshad Mehta — charming, ambitious, tragic. Hansal Mehta directs with urgency and precision. The stock market sequences are made thrilling for even financial novices. The theme music alone gives you goosebumps. India''s Breaking Bad.'),
+((SELECT movie_id FROM movies WHERE title = 'Scam 1992' AND content_type = 'series' LIMIT 1), (SELECT user_id FROM users WHERE username = 'ScreenSavant'), 9.3, 'A masterclass in biographical storytelling. The 80s/90s Mumbai recreation is impeccable. The rise-and-fall narrative is gripping from episode one to the devastating finale. Shreya Dhanwanthary as Sucheta Dalal provides the moral compass. Achilles Heel is the best background score in Indian TV.'),
+((SELECT movie_id FROM movies WHERE title = 'Family Man' AND content_type = 'series' LIMIT 1), (SELECT user_id FROM users WHERE username = 'ReelTalkReviews'), 9.0, 'Manoj Bajpayee is perfectly cast as the everyman spy. The show balances high-stakes espionage with family comedy brilliantly. Season 2''s Sri Lanka subplot is a massive upgrade. Sharib Hashmi as JK deserves his own spinoff. Raj & DK created India''s most entertaining thriller.'),
+((SELECT movie_id FROM movies WHERE title = 'Family Man' AND content_type = 'series' LIMIT 1), (SELECT user_id FROM users WHERE username = 'BingeWatcher101'), 8.8, 'What makes Family Man special is how relatable Srikant''s domestic problems are — school admissions, nagging wife, teenage drama — juxtaposed with literally saving the nation. The humor is sharp and the action sequences rival Hollywood. Samantha Ruth Prabhu was a revelation in Season 2.'),
+((SELECT movie_id FROM movies WHERE title = 'Delhi Crime' AND content_type = 'series' LIMIT 1), (SELECT user_id FROM users WHERE username = 'TheFrameJunkie'), 9.0, 'Shefali Shah delivers one of the finest performances in Indian television as DCP Vartika. The series treats its subject with dignity and restraint, focusing on the investigation rather than the crime. Won the International Emmy for a reason — it''s world-class television.'),
+((SELECT movie_id FROM movies WHERE title = 'Delhi Crime' AND content_type = 'series' LIMIT 1), (SELECT user_id FROM users WHERE username = 'MovieMaven'), 8.8, 'A procedural that grips you from the first frame. The 72-hour timeline creates unbearable tension. The performances are uniformly excellent. It avoids exploitation while never shying away from the systemic failures that allowed such a crime. Essential Indian TV.')
+ON CONFLICT (movie_id, user_id) DO NOTHING;
+
 SELECT setval('genres_genre_id_seq', (SELECT COALESCE(MAX(genre_id), 1) FROM genres));
 SELECT setval('movies_movie_id_seq', (SELECT COALESCE(MAX(movie_id), 1) FROM movies));
 SELECT setval('users_user_id_seq', (SELECT COALESCE(MAX(user_id), 1) FROM users));
