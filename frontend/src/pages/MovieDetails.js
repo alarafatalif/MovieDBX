@@ -317,7 +317,7 @@ function MovieDetails() {
           </div>
           <div className="cast-list">
             {directors.map(d => (
-              <div key={d.director_id} className="cast-card">
+              <div key={d.person_id} className="cast-card">
                 {d.photo_url ? (
                   <img src={d.photo_url} alt={d.name} className="cast-photo"
                     onError={(e) => { e.target.src = 'https://via.placeholder.com/80x80/333/fff?text=?'; }} />
@@ -345,7 +345,7 @@ function MovieDetails() {
           </div>
           <div className="cast-list">
             {writers.map(w => (
-              <div key={w.writer_id} className="cast-card">
+              <div key={w.person_id} className="cast-card">
                 <div className="cast-photo-placeholder">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b949e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
                 </div>
@@ -368,7 +368,7 @@ function MovieDetails() {
           </div>
           <div className="cast-list">
             {cast.map(a => (
-              <div key={a.actor_id} className="cast-card">
+              <div key={a.person_id} className="cast-card">
                 {a.photo_url ? (
                   <img src={a.photo_url} alt={a.name} className="cast-photo"
                     onError={(e) => { e.target.src = 'https://via.placeholder.com/80x80/333/fff?text=?'; }} />

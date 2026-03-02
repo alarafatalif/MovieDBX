@@ -1,23 +1,3 @@
-// ============================================================
-// movies.routes.js — Defines All Movie-Related API Endpoints
-// ============================================================
-// This file maps URL paths to controller functions.
-//
-// HOW ROUTING WORKS:
-//   When the frontend makes a request like GET /api/movies/5,
-//   Express checks this file to find a matching route.
-//   If it matches "/:id", it calls getMovieById(req, res).
-//
-// ROUTE ORDER MATTERS!
-//   /suggestions and /top-rated MUST come BEFORE /:id
-//   Otherwise Express thinks "suggestions" is a movie ID.
-//   Express matches routes top-to-bottom — first match wins.
-//
-// HTTP METHODS:
-//   GET    → Read/fetch data    (doesn't change the database)
-//   POST   → Create new data    (inserts into the database)
-//   DELETE → Remove data         (deletes from the database)
-// ============================================================
 
 import express from 'express';
 import { 

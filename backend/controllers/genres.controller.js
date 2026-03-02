@@ -1,13 +1,4 @@
-// ============================================================
-// genres.controller.js — Genre Business Logic
-// ============================================================
-// Handles two operations:
-//   1. getAllGenres  → Returns the list of all genres (for the dropdown filter)
-//   2. getMoviesByGenre → Returns movies belonging to a specific genre
-//
-// These are the simplest controllers in the project — good starting point
-// for understanding how controllers work.
-//
+
 // CONTROLLER PATTERN:
 //   1. Receive the request (req) from Express
 //   2. Run a SQL query against the database (pool.query)

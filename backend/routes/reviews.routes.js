@@ -1,15 +1,3 @@
-// ============================================================
-// reviews.routes.js — Review-Related API Endpoints
-// ============================================================
-// Handles creating, reading, updating, and deleting movie reviews.
-// Also provides endpoints for getting movies with their average ratings.
-//
-// CRUD OPERATIONS:
-//   POST   → Create a new review
-//   GET    → Read reviews / ratings
-//   PUT    → Update an existing review (full replacement)
-//   DELETE → Remove a review
-// ============================================================
 
 import express from 'express';
 import {
@@ -25,7 +13,6 @@ const router = express.Router();
 
 // POST /api/reviews → Submit a new review (sends user_id, movie_id, rating, review_text in body)
 router.post('/', addReview);
-
 // GET /api/reviews/movie/5 → Get all reviews for movie ID 5 (with usernames)
 router.get('/movie/:movieId', getMovieReviews);
 

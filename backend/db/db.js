@@ -24,14 +24,32 @@ import dotenv from 'dotenv';    // Loads .env file variables into process.env
 // Load environment variables (DATABASE_URL, etc.) from the .env file
 dotenv.config();
 
+// Strip sslmode and channel_binding from the URL to avoid conflicts
+// with the ssl config object below (newer pg versions treat sslmode=require
+// as verify-full, which can break with rejectUnauthorized: false)
+let dbUrl = process.env.DATABASE_URL || '';
+dbUrl = dbUrl.replace(/[?&](sslmode|channel_binding)=[^&]*/g, '');
+// Clean up leftover ? or & at the end
+dbUrl = dbUrl.replace(/\?$/, '');
+
 // Create the connection pool using the DATABASE_URL from .env
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,   // The full database URL
+  connectionString: dbUrl,              // The full database URL (cleaned)
   ssl: {
-    rejectUnauthorized: false   // Required for cloud-hosted databases (e.g., Neon, Supabase)
-                                // Set to false because free-tier DBs use self-signed SSL certs
+    rejectUnauthorized: false           // Required for cloud-hosted databases (e.g., Neon, Supabase)
+                                        // Set to false because free-tier DBs use self-signed SSL certs
   }
 });
+
+// Log pool errors so they don't crash the process silently
+pool.on('error', (err) => {
+  console.error('Unexpected database pool error:', err.message);
+});
+
+// Test the connection on startup
+pool.query('SELECT NOW()')
+  .then(() => console.log('✅ Database connected successfully'))
+  .catch((err) => console.error('❌ Database connection failed:', err.message));
 
 // Export the pool so other files can use it to run SQL queries
 export default pool;

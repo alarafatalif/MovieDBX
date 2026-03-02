@@ -7,8 +7,8 @@
 // WHAT IT DOES:
 //   1. Reads the schema.sql file (which contains all CREATE TABLE statements)
 //   2. Sends the entire SQL to PostgreSQL to execute
-//   3. Creates all 12 tables: users, movies, genres, directors, actors,
-//      writers, reviews, watchlist, and all junction tables
+//   3. Creates all tables: users, movies, genres, persons,
+//      reviews, watchlist, and all junction tables (movie_genres, movie_crew)
 //
 // SAFE TO RE-RUN:
 //   The schema uses "CREATE TABLE IF NOT EXISTS" so running this
@@ -19,7 +19,6 @@
 //   2. node db/seed.js     ← Adds initial sample data
 //   3. node server.js      ← Starts the API server
 // ============================================================
-
 import pool from './db.js';                      // Database connection pool
 import fs from 'fs';                             // File system — to read schema.sql
 import { fileURLToPath } from 'url';             // Converts ES module URL to file path

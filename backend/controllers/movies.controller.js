@@ -211,33 +211,18 @@ export const getMovieById = async (req, res) => {
 // ============================================================
 // GET /api/movies/:id/cast → Get Cast Members for a Movie
 // ============================================================
-// Uses the movie_cast JUNCTION TABLE to link movies ↔ actors.
-//
-// Why a junction table?
-//   One movie can have MANY actors, and one actor can be in MANY movies.
-//   This is a Many-to-Many (M:M) relationship.
-//   The junction table (movie_cast) sits in between:
-//     movies ←→ movie_cast ←→ actors
-//
-// Bonus: movie_cast also stores character_name, which belongs
-// to neither movies nor actors — it's specific to the combination.
+// Queries the persons table filtered by role='actor'.
+// No junction table needed — movie_id and role live directly on persons.
 // ============================================================
 export const getMovieCast = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // JOIN movie_cast with actors to get actor details + character names
     const query = `
-      SELECT 
-        a.actor_id,
-        a.name,
-        a.bio,
-        a.photo_url,
-        mc.character_name
-      FROM movie_cast mc
-      JOIN actors a ON mc.actor_id = a.actor_id
-      WHERE mc.movie_id = $1
-      ORDER BY a.name
+      SELECT person_id, name, bio, photo_url, character_name
+      FROM persons
+      WHERE movie_id = $1 AND role = 'actor'
+      ORDER BY name
     `;
 
     const result = await pool.query(query, [id]);
@@ -250,22 +235,16 @@ export const getMovieCast = async (req, res) => {
 // ============================================================
 // GET /api/movies/:id/directors → Get Directors for a Movie
 // ============================================================
-// Same junction table pattern as cast above:
-//   movies ←→ movie_directors ←→ directors
+// Same persons table, filtered by role='director'.
 // ============================================================
 export const getMovieDirectors = async (req, res) => {
   try {
     const { id } = req.params;
 
     const query = `
-      SELECT 
-        d.director_id,
-        d.name,
-        d.bio,
-        d.photo_url
-      FROM movie_directors md
-      JOIN directors d ON md.director_id = d.director_id
-      WHERE md.movie_id = $1
+      SELECT person_id, name, bio, photo_url
+      FROM persons
+      WHERE movie_id = $1 AND role = 'director'
     `;
 
     const result = await pool.query(query, [id]);
@@ -278,19 +257,16 @@ export const getMovieDirectors = async (req, res) => {
 // ============================================================
 // GET /api/movies/:id/writers → Get Writers for a Movie
 // ============================================================
-// Same pattern: movies ←→ movie_writers ←→ writers
+// Same persons table, filtered by role='writer'.
 // ============================================================
 export const getMovieWriters = async (req, res) => {
   try {
     const { id } = req.params;
 
     const query = `
-      SELECT 
-        w.writer_id,
-        w.name
-      FROM movie_writers mw
-      JOIN writers w ON mw.writer_id = w.writer_id
-      WHERE mw.movie_id = $1
+      SELECT person_id, name
+      FROM persons
+      WHERE movie_id = $1 AND role = 'writer'
     `;
 
     const result = await pool.query(query, [id]);
@@ -358,25 +334,22 @@ export const getMovieFull = async (req, res) => {
       `, [id]),
       // Query 2: Cast members (actors + character names)
       pool.query(`
-        SELECT a.actor_id, a.name, a.bio, a.photo_url, mc.character_name
-        FROM movie_cast mc
-        JOIN actors a ON mc.actor_id = a.actor_id
-        WHERE mc.movie_id = $1
-        ORDER BY a.name
+        SELECT person_id, name, bio, photo_url, character_name
+        FROM persons
+        WHERE movie_id = $1 AND role = 'actor'
+        ORDER BY name
       `, [id]),
       // Query 3: Directors
       pool.query(`
-        SELECT d.director_id, d.name, d.bio, d.photo_url
-        FROM movie_directors md
-        JOIN directors d ON md.director_id = d.director_id
-        WHERE md.movie_id = $1
+        SELECT person_id, name, bio, photo_url
+        FROM persons
+        WHERE movie_id = $1 AND role = 'director'
       `, [id]),
       // Query 4: Writers
       pool.query(`
-        SELECT w.writer_id, w.name
-        FROM movie_writers mw
-        JOIN writers w ON mw.writer_id = w.writer_id
-        WHERE mw.movie_id = $1
+        SELECT person_id, name
+        FROM persons
+        WHERE movie_id = $1 AND role = 'writer'
       `, [id]),
       // Query 5: Similar movies (same genre-based recommendation)
       pool.query(`
@@ -613,9 +586,7 @@ export const addMovie = async (req, res) => {
 // IMPORTANT: Because of ON DELETE CASCADE in schema.sql,
 // deleting a movie AUTOMATICALLY deletes all related records:
 //   - movie_genres entries
-//   - movie_cast entries
-//   - movie_directors entries
-//   - movie_writers entries
+//   - movie_crew entries (actors, directors, writers)
 //   - reviews for this movie
 //   - watchlist entries for this movie
 //
