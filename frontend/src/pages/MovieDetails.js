@@ -31,7 +31,7 @@ import {
   addToWatchlist
 } from '../services/api';
 import { useUser } from '../context/UserContext';
-import { searchPersonPhoto } from '../services/tmdb';
+import { searchPersonPhoto, searchMovieRating } from '../services/tmdb';
 import '../styles/MovieDetails.css';
 
 function MovieDetails() {
@@ -55,6 +55,7 @@ function MovieDetails() {
   const [inWatchlist, setInWatchlist] = useState(false);  // Is this movie in user's watchlist?
   const [reviewError, setReviewError] = useState('');     // Error message for review form
   const [personPhotos, setPersonPhotos] = useState({});    // TMDB person photos { name: url }
+  const [tmdbRating, setTmdbRating] = useState(null);      // TMDB rating info
 
   // ── EFFECT: Reload data when movie ID or user changes ──
   // Runs when: 1) navigating to a different movie, 2) user logs in/out
@@ -92,6 +93,24 @@ function MovieDetails() {
     fetchPhotos();
     return () => { cancelled = true; };
   }, [cast, directors, writers]);
+
+  // ── EFFECT: Fetch TMDB rating for this title ──
+  useEffect(() => {
+    if (!movie?.title) return;
+    let cancelled = false;
+
+    const fetchRating = async () => {
+      const result = await searchMovieRating(
+        movie.title,
+        movie.release_year,
+        movie.content_type
+      );
+      if (!cancelled) setTmdbRating(result);
+    };
+
+    fetchRating();
+    return () => { cancelled = true; };
+  }, [movie]);
 
   // Fetch ALL movie data in one API call
   // This calls getMovieFull() which hits /api/movies/:id/full on the backend
@@ -178,6 +197,9 @@ function MovieDetails() {
 
   // Parse the rating for display (e.g., "7.5" not "7.50000001")
   const ratingValue = parseFloat(movie.average_rating || 0).toFixed(1);
+  const tmdbRatingValue = tmdbRating?.rating != null
+    ? parseFloat(tmdbRating.rating).toFixed(1)
+    : null;
   const isSeries = movie.content_type === 'series';
 
   // ============================================================
@@ -218,12 +240,31 @@ function MovieDetails() {
 
             {/* Rating block */}
             <div className="md-rating-block">
-              <div className="md-rating-score">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="#f5c518" stroke="#f5c518" strokeWidth="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <span className="md-rating-number">{ratingValue}</span>
-                <span className="md-rating-max">/10</span>
+              <div className="md-rating-group">
+                <span className="md-rating-label">User rating</span>
+                <div className="md-rating-score">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#f5c518" stroke="#f5c518" strokeWidth="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <span className="md-rating-number">{ratingValue}</span>
+                  <span className="md-rating-max">/10</span>
+                </div>
+                <span className="md-rating-subtext">
+                  {movie.review_count || 0} review{(movie.review_count || 0) !== 1 ? 's' : ''}
+                </span>
               </div>
-              <span className="md-review-count">{movie.review_count || 0} review{(movie.review_count || 0) !== 1 ? 's' : ''}</span>
+
+              <span className="md-rating-divider" />
+
+              <div className="md-rating-group">
+                <span className="md-rating-label">TMDB</span>
+                <div className="md-rating-score">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#f5c518" stroke="#f5c518" strokeWidth="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <span className="md-rating-number">{tmdbRatingValue || '—'}</span>
+                  <span className="md-rating-max">/10</span>
+                </div>
+                <span className="md-rating-subtext">
+                  {tmdbRating ? `${tmdbRating.count || 0} votes` : 'No TMDB rating'}
+                </span>
+              </div>
             </div>
 
             <div className="movie-meta">
