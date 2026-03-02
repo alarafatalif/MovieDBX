@@ -58,15 +58,15 @@
 }
 
 .hero-genre-tag {
-  background: rgba(102, 126, 234, 0.15);
-  color: #667eea;
+  background: rgba(245, 197, 24, 0.15);
+  color: #f5c518;
   font-size: 0.72rem;
   font-weight: 600;
   padding: 3px 10px;
   border-radius: 20px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border: 1px solid rgba(102, 126, 234, 0.25);
+  border: 1px solid rgba(245, 197, 24, 0.25);
 }
 
 .hero-title {
@@ -89,7 +89,7 @@
 }
 
 .hero-rating {
-  color: #667eea;
+  color: #f5c518;
   font-weight: 700;
 }
 
@@ -126,7 +126,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #f5c518, #d19a00);
   color: #ffffff;
   border: none;
   padding: 0.75rem 2rem;
@@ -136,12 +136,12 @@
   cursor: pointer;
   transition: all 0.3s ease;
   letter-spacing: 0.3px;
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 16px rgba(245, 197, 24, 0.3);
 }
 
 .hero-details-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(102, 126, 234, 0.45);
+  box-shadow: 0 6px 24px rgba(245, 197, 24, 0.45);
 }
 
 /* ── Navigation Arrows ───────────────────────────────────── */
@@ -169,8 +169,8 @@
 }
 
 .hero-arrow:hover {
-  background: rgba(102, 126, 234, 0.2);
-  border-color: rgba(102, 126, 234, 0.4);
+  background: rgba(245, 197, 24, 0.2);
+  border-color: rgba(245, 197, 24, 0.4);
   transform: translateY(-50%) scale(1.08);
 }
 
@@ -226,14 +226,14 @@ ul.hero-dots li {
 }
 
 ul.hero-dots li.slick-active .hero-dot {
-  background: #667eea;
+  background: #f5c518;
   transform: scale(1.25);
   width: 22px;
   border-radius: 10px;
 }
 
 ul.hero-dots li:hover .hero-dot {
-  background: rgba(102, 126, 234, 0.5);
+  background: rgba(245, 197, 24, 0.5);
 }
 
 /* ── Responsive ──────────────────────────────────────────── */

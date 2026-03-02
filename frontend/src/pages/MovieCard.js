@@ -29,7 +29,7 @@ function MovieCard({ movie }) {
   };
 
   const firstGenre = (movie.genres || []).filter(Boolean)[0];
-  const [gradFrom, gradTo] = genreColors[firstGenre] || ['#1a1a2e', '#667eea'];
+  const [gradFrom, gradTo] = genreColors[firstGenre] || ['#1a1a2e', '#f5c518'];
 
   const rating = parseFloat(movie.average_rating || 0).toFixed(1);
   const reviewCount = movie.review_count || 0;

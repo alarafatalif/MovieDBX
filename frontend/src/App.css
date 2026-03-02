@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 * {
   margin: 0;
@@ -11,13 +11,23 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #0d1117;
   color: #e6edf3;
+}
+
+h1,
+h2,
+h3,
+.nav-brand {
+  font-family: 'Bebas Neue', 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
+  letter-spacing: 0.5px;
 }
 
 /* Custom Scrollbar */
@@ -31,21 +41,21 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(102, 126, 234, 0.25);
+  background: rgba(245, 197, 24, 0.25);
   border-radius: 10px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(102, 126, 234, 0.45);
+  background: rgba(245, 197, 24, 0.5);
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
 /* Text selection */
 ::selection {
-  background: rgba(102, 126, 234, 0.35);
+  background: rgba(245, 197, 24, 0.35);
   color: #fff;
 }
 
@@ -89,18 +99,18 @@ body {
   margin-right: 16px;
   background: none !important;
   padding: 8px 12px !important;
-  background: linear-gradient(135deg, #667eea, #9b59b6) !important;
+  background: linear-gradient(135deg, #f5c518, #d19a00) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
-  letter-spacing: -0.5px;
+  letter-spacing: 0.6px;
 }
 
 .nav-brand svg {
   display: inline-block;
   vertical-align: middle;
   margin-right: 6px;
-  stroke: #667eea;
+  stroke: #f5c518;
 }
 
 .nav-link svg {
@@ -112,7 +122,7 @@ body {
   display: inline-block;
   vertical-align: middle;
   margin-right: 2px;
-  stroke: #667eea;
+  stroke: #f5c518;
 }
 
 .nav-link {
@@ -128,22 +138,22 @@ body {
 }
 
 .nav-link:hover {
-  background: rgba(102, 126, 234, 0.1);
+  background: rgba(245, 197, 24, 0.12);
   color: white;
   transform: none;
 }
 
 .nav-link.active,
 .nav-link[aria-current="page"] {
-  color: #667eea;
-  background: rgba(102, 126, 234, 0.12);
+  color: #f5c518;
+  background: rgba(245, 197, 24, 0.14);
 }
 
 .user-info {
   color: rgba(255,255,255,0.7);
   font-weight: 600;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
-  border: 1px solid rgba(102, 126, 234, 0.15);
+  background: linear-gradient(135deg, rgba(245, 197, 24, 0.12), rgba(209, 154, 0, 0.12));
+  border: 1px solid rgba(245, 197, 24, 0.2);
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 0.9em;
@@ -152,7 +162,7 @@ body {
 
 .nav-btn,
 .nav-btn-link {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #f5c518, #d19a00);
   color: #fff;
   border: none;
   padding: 8px 22px;
@@ -164,14 +174,14 @@ body {
   font-size: 0.9em;
   display: inline-block;
   letter-spacing: 0.3px;
-  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
+  box-shadow: 0 2px 10px rgba(245, 197, 24, 0.2);
 }
 
 .nav-btn:hover,
 .nav-btn-link:hover {
-  background: linear-gradient(135deg, #7b8ff0, #8b5fc7);
+  background: linear-gradient(135deg, #ffd866, #f5c518);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 16px rgba(245, 197, 24, 0.35);
 }
 
 .logout-btn {
@@ -215,7 +225,7 @@ body {
   font-weight: 800;
   font-size: 1.1em;
   letter-spacing: -0.5px;
-  background: linear-gradient(135deg, #667eea, #9b59b6);
+  background: linear-gradient(135deg, #f5c518, #c79200);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -240,7 +250,7 @@ body {
 }
 
 .footer-link:hover {
-  color: #667eea;
+  color: #f5c518;
 }
 
 .footer-dot {

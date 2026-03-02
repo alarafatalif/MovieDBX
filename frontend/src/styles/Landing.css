@@ -5,7 +5,7 @@
 
 .landing {
   position: relative;
-  min-height: 100vh;
+  background: rgba(245, 197, 24, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,6 @@
   position: absolute;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  opacity: 0.5;
   pointer-events: none;
 }
 
@@ -33,7 +32,6 @@
   border-radius: 50%;
   filter: blur(100px);
   opacity: 0;
-  animation: glowPulse 6s ease-in-out infinite;
 }
 
 .landing--loaded .landing-glow {
@@ -43,7 +41,7 @@
 .landing-glow-1 {
   width: 500px;
   height: 500px;
-  background: rgba(102, 126, 234, 0.12);
+  background: rgba(245, 197, 24, 0.12);
   top: -10%;
   left: -5%;
   animation-delay: 0s;
@@ -52,20 +50,20 @@
 .landing-glow-2 {
   width: 400px;
   height: 400px;
-  background: rgba(139, 92, 246, 0.08);
+  background: rgba(245, 197, 24, 0.06);
   bottom: -10%;
   right: -5%;
   animation-delay: 2s;
+  border: 2px solid rgba(245, 197, 24, 0.4);
 }
 
 .landing-glow-3 {
   width: 300px;
   height: 300px;
-  background: rgba(102, 126, 234, 0.06);
+  background: rgba(245, 197, 24, 0.1);
   top: 40%;
   left: 50%;
   transform: translateX(-50%);
-  animation-delay: 4s;
 }
 
 @keyframes glowPulse {
@@ -77,7 +75,7 @@
 .landing-floater {
   position: absolute;
   border-radius: 50%;
-  background: rgba(102, 126, 234, 0.35);
+  background: rgba(245, 197, 24, 0.35);
   opacity: 0;
   animation: floatUp 18s linear infinite;
   pointer-events: none;
@@ -85,9 +83,9 @@
 }
 
 .landing-floater-1 { left: 8%; width: 6px; height: 6px; animation-duration: 20s; animation-delay: 0s; }
-.landing-floater-2 { left: 25%; width: 4px; height: 4px; animation-duration: 24s; animation-delay: 3s; background: rgba(139, 92, 246, 0.3); }
+.landing-floater-2 { left: 25%; width: 4px; height: 4px; animation-duration: 24s; animation-delay: 3s; background: rgba(245, 197, 24, 0.25); }
 .landing-floater-3 { left: 50%; width: 8px; height: 8px; animation-duration: 18s; animation-delay: 6s; }
-.landing-floater-4 { left: 72%; width: 3px; height: 3px; animation-duration: 22s; animation-delay: 2s; background: rgba(139, 92, 246, 0.25); }
+.landing-floater-4 { left: 72%; width: 3px; height: 3px; animation-duration: 22s; animation-delay: 2s; background: rgba(245, 197, 24, 0.2); }
 .landing-floater-5 { left: 90%; width: 5px; height: 5px; animation-duration: 26s; animation-delay: 8s; }
 
 @keyframes floatUp {
@@ -140,11 +138,11 @@
   justify-content: center;
   width: 80px;
   height: 80px;
-  background: rgba(102, 126, 234, 0.1);
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  background: rgba(245, 197, 24, 0.1);
+  border: 1px solid rgba(245, 197, 24, 0.2);
   border-radius: 20px;
   animation: logoBounce 3s ease-in-out infinite;
-  filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.3));
+  filter: drop-shadow(0 0 20px rgba(245, 197, 24, 0.3));
 }
 
 @keyframes logoBounce {
@@ -163,7 +161,7 @@
 }
 
 .landing-title-accent {
-  background: linear-gradient(135deg, #667eea, #9b59b6, #667eea);
+  background: linear-gradient(135deg, #f5c518, #c79200, #f5c518);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -208,15 +206,15 @@
 }
 
 .landing-feature:hover {
-  background: rgba(102, 126, 234, 0.1);
-  border-color: rgba(102, 126, 234, 0.25);
-  color: #818cf8;
+  background: rgba(245, 197, 24, 0.1);
+  border-color: rgba(245, 197, 24, 0.25);
+  color: #ffd866;
   transform: translateY(-2px);
 }
 
 .landing-feature svg {
   flex-shrink: 0;
-  color: #818cf8;
+  color: #ffd866;
 }
 
 /* ── Action Buttons ──────────────────────────────────────── */
@@ -249,27 +247,27 @@
 
 /* Login — primary accent */
 .landing-btn-primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #f5c518, #d19a00);
   color: #ffffff;
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 20px rgba(245, 197, 24, 0.3);
 }
 
 .landing-btn-primary:hover {
-  background: linear-gradient(135deg, #7b8ff0, #667eea);
+  background: linear-gradient(135deg, #ffd866, #f5c518);
   transform: translateY(-2px);
-  box-shadow: 0 6px 28px rgba(102, 126, 234, 0.45);
+  box-shadow: 0 6px 28px rgba(245, 197, 24, 0.45);
 }
 
 /* Sign Up — outline */
 .landing-btn-secondary {
   background: transparent;
-  color: #667eea;
-  border: 2px solid rgba(102, 126, 234, 0.4);
+  color: #f5c518;
+  border: 2px solid rgba(245, 197, 24, 0.4);
 }
 
 .landing-btn-secondary:hover {
-  background: rgba(102, 126, 234, 0.08);
-  border-color: #667eea;
+  background: rgba(245, 197, 24, 0.08);
+  border-color: #f5c518;
   transform: translateY(-2px);
 }
 
