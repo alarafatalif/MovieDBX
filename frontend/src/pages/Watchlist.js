@@ -83,27 +83,31 @@ function Watchlist() {
         </div>
       ) : (
         <div className="movies-grid">
-          {watchlist.map(movie => (
-            <div key={movie.movie_id} className="movie-card">
-              {movie.poster_url ? (
-                <img 
-                  src={movie.poster_url} 
-                  alt={movie.title}
-                  className="movie-poster"
-                  onClick={() => navigate(`/movie/${movie.movie_id}`)}
-                  onError={(e) => {
-                    e.target.src = `https://via.placeholder.com/300x450/667eea/ffffff?text=${encodeURIComponent(movie.title)}`;
-                  }}
-                />
-              ) : (
-                <div 
-                  className="movie-poster-placeholder"
-                  onClick={() => navigate(`/movie/${movie.movie_id}`)}
-                >
-                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b949e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
-                  <p>{movie.title}</p>
-                </div>
-              )}
+          {watchlist.map((movie, index) => (
+            <div key={movie.movie_id} className="movie-card" style={{ animationDelay: `${index * 0.05}s` }}>
+              <div style={{ overflow: 'hidden' }}>
+                {movie.poster_url ? (
+                  <img 
+                    src={movie.poster_url} 
+                    alt={movie.title}
+                    className="movie-poster"
+                    onClick={() => navigate(`/movie/${movie.movie_id}`)}
+                    style={{ cursor: 'pointer' }}
+                    onError={(e) => {
+                      e.target.src = `https://via.placeholder.com/300x450/667eea/ffffff?text=${encodeURIComponent(movie.title)}`;
+                    }}
+                  />
+                ) : (
+                  <div 
+                    className="movie-poster-placeholder"
+                    onClick={() => navigate(`/movie/${movie.movie_id}`)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b949e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+                    <p>{movie.title}</p>
+                  </div>
+                )}
+              </div>
 
               <div 
                 className="movie-card-content"

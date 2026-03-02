@@ -2,6 +2,12 @@
     max-width: 960px;
     margin: 0 auto;
     padding: 20px;
+    animation: mdFadeIn 0.5s ease;
+  }
+
+  @keyframes mdFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   
   /* ── Loading state ── */
@@ -52,8 +58,18 @@
     border: 1px solid rgba(255,255,255,0.06);
     color: white;
     padding: 40px;
-    border-radius: 14px;
+    border-radius: 16px;
     margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .movie-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 85% 25%, rgba(102, 126, 234, 0.08), transparent 50%);
+    pointer-events: none;
   }
   
   .movie-header-content {
@@ -64,10 +80,17 @@
 
   .movie-poster-large {
     width: 220px;
-    border-radius: 12px;
+    border-radius: 14px;
     flex-shrink: 0;
     object-fit: cover;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    transition: transform 0.4s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .movie-poster-large:hover {
+    transform: scale(1.03) rotate(-1deg);
   }
 
   .movie-header-info {
@@ -87,6 +110,10 @@
     font-weight: 800;
     letter-spacing: -0.5px;
     line-height: 1.2;
+    background: linear-gradient(135deg, #fff, rgba(255,255,255,0.8));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
   .md-oscar-badge {
@@ -121,11 +148,12 @@
     align-items: center;
     gap: 14px;
     margin: 16px 0;
-    padding: 12px 18px;
-    background: rgba(0,0,0,0.2);
-    border-radius: 10px;
+    padding: 14px 20px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 12px;
     border: 1px solid rgba(255,255,255,0.06);
     width: fit-content;
+    backdrop-filter: blur(8px);
   }
 
   .md-rating-score {
@@ -372,15 +400,16 @@
     gap: 12px;
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 12px 16px;
     min-width: 180px;
-    transition: all 0.2s;
+    transition: all 0.25s ease;
   }
 
   .cast-card:hover {
-    background: rgba(255,255,255,0.06);
-    border-color: rgba(255,255,255,0.1);
+    background: rgba(102, 126, 234, 0.06);
+    border-color: rgba(102, 126, 234, 0.15);
+    transform: translateY(-2px);
   }
 
   .cast-photo {
@@ -426,7 +455,8 @@
     background: rgba(255,255,255,0.02);
     border: 1px solid rgba(255,255,255,0.06);
     padding: 28px;
-    border-radius: 14px;
+    border-radius: 16px;
+    backdrop-filter: blur(6px);
   }
   
   .reviews-header {
@@ -531,14 +561,19 @@
   
   .review-card {
     background: rgba(255,255,255,0.03);
-    padding: 20px;
-    border-radius: 12px;
+    padding: 22px;
+    border-radius: 14px;
     border-left: 3px solid #667eea;
-    transition: background 0.2s;
+    transition: all 0.25s ease;
+    border: 1px solid rgba(255,255,255,0.04);
+    border-left: 3px solid #667eea;
   }
 
   .review-card:hover {
     background: rgba(255,255,255,0.05);
+    transform: translateX(4px);
+    border-color: rgba(255,255,255,0.08);
+    border-left-color: #818cf8;
   }
   
   .review-header {
@@ -625,11 +660,11 @@
     cursor: pointer;
     width: 140px;
     text-align: center;
-    transition: transform 0.2s;
+    transition: transform 0.3s ease;
   }
 
   .similar-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px) scale(1.02);
   }
 
   .similar-poster {

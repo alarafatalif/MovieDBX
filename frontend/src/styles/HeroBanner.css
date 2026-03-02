@@ -5,7 +5,8 @@
   width: 100%;
   margin-bottom: 2rem;
   overflow: hidden;
-  border-radius: 0 0 18px 18px;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
 }
 
 /* Slide wrapper */
@@ -16,9 +17,9 @@
 .hero-backdrop {
   position: relative;
   width: 100%;
-  height: 500px;
-  min-height: 400px;
-  max-height: 550px;
+  height: 520px;
+  min-height: 420px;
+  max-height: 580px;
   background-size: cover;
   background-position: center 20%;
   background-repeat: no-repeat;
@@ -69,13 +70,13 @@
 }
 
 .hero-title {
-  font-size: 2.6rem;
-  font-weight: 800;
+  font-size: 2.8rem;
+  font-weight: 900;
   color: #ffffff;
   margin: 0 0 0.6rem;
-  line-height: 1.15;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
-  letter-spacing: -0.5px;
+  line-height: 1.12;
+  text-shadow: 0 3px 16px rgba(0, 0, 0, 0.7);
+  letter-spacing: -0.8px;
 }
 
 .hero-meta {
@@ -125,22 +126,22 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: #667eea;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   color: #ffffff;
   border: none;
-  padding: 0.7rem 1.8rem;
-  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  border-radius: 10px;
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
   letter-spacing: 0.3px;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
 }
 
 .hero-details-btn:hover {
-  background: #5a6fd6;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 6px 24px rgba(102, 126, 234, 0.45);
 }
 
 /* ── Navigation Arrows ───────────────────────────────────── */
