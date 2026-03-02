@@ -5,12 +5,21 @@ const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 const posterCache = new Map();
+const personCache = new Map();
 
 try {
   const saved = sessionStorage.getItem('tmdb_poster_cache');
   if (saved) {
     const parsed = JSON.parse(saved);
     Object.entries(parsed).forEach(([k, v]) => posterCache.set(k, v));
+  }
+} catch {}
+
+try {
+  const saved = sessionStorage.getItem('tmdb_person_cache');
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    Object.entries(parsed).forEach(([k, v]) => personCache.set(k, v));
   }
 } catch {}
 
@@ -21,7 +30,15 @@ const saveCacheToStorage = () => {
   } catch {}
 };
 
+const savePersonCacheToStorage = () => {
+  try {
+    const obj = Object.fromEntries(personCache);
+    sessionStorage.setItem('tmdb_person_cache', JSON.stringify(obj));
+  } catch {}
+};
+
 const inFlight = new Map();
+const personInFlight = new Map();
 
 export const searchMoviePoster = async (movieTitle, year) => {
   const cacheKey = `${movieTitle}-${year || ''}`;
@@ -58,5 +75,44 @@ export const searchMoviePoster = async (movieTitle, year) => {
   })();
 
   inFlight.set(cacheKey, promise);
+  return promise;
+};
+
+export const searchPersonPhoto = async (personName) => {
+  if (!personName) return null;
+  const cacheKey = personName.trim().toLowerCase();
+
+  if (personCache.has(cacheKey)) {
+    return personCache.get(cacheKey);
+  }
+
+  if (personInFlight.has(cacheKey)) {
+    return personInFlight.get(cacheKey);
+  }
+
+  const promise = (async () => {
+    try {
+      const response = await axios.get(`${TMDB_BASE_URL}/search/person`, {
+        params: { api_key: TMDB_API_KEY, query: personName }
+      });
+
+      let url = null;
+      if (response.data.results.length > 0) {
+        const profilePath = response.data.results[0].profile_path;
+        if (profilePath) url = `https://image.tmdb.org/t/p/w185${profilePath}`;
+      }
+
+      personCache.set(cacheKey, url);
+      savePersonCacheToStorage();
+      return url;
+    } catch (error) {
+      console.error('Error fetching person photo:', error);
+      return null;
+    } finally {
+      personInFlight.delete(cacheKey);
+    }
+  })();
+
+  personInFlight.set(cacheKey, promise);
   return promise;
 };

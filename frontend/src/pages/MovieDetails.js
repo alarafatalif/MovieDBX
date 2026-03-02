@@ -31,6 +31,7 @@ import {
   addToWatchlist
 } from '../services/api';
 import { useUser } from '../context/UserContext';
+import { searchPersonPhoto } from '../services/tmdb';
 import '../styles/MovieDetails.css';
 
 function MovieDetails() {
@@ -53,12 +54,44 @@ function MovieDetails() {
   const [newReview, setNewReview]   = useState({ rating: 5, review_text: '' });  // Form data
   const [inWatchlist, setInWatchlist] = useState(false);  // Is this movie in user's watchlist?
   const [reviewError, setReviewError] = useState('');     // Error message for review form
+  const [personPhotos, setPersonPhotos] = useState({});    // TMDB person photos { name: url }
 
   // ── EFFECT: Reload data when movie ID or user changes ──
   // Runs when: 1) navigating to a different movie, 2) user logs in/out
   useEffect(() => {
     loadAll();
   }, [id, user]);
+
+  // ── EFFECT: Fetch person photos from TMDB for cast, directors, writers ──
+  useEffect(() => {
+    const allPeople = [
+      ...directors.map(d => d.name),
+      ...writers.map(w => w.name),
+      ...cast.map(a => a.name)
+    ].filter(Boolean);
+
+    if (allPeople.length === 0) return;
+
+    // Only fetch photos for people we don't already have
+    const toFetch = allPeople.filter(name => !(name in personPhotos));
+    if (toFetch.length === 0) return;
+
+    let cancelled = false;
+    const fetchPhotos = async () => {
+      const results = {};
+      // Batch in groups of 5 to avoid rate-limiting
+      for (let i = 0; i < toFetch.length; i += 5) {
+        const batch = toFetch.slice(i, i + 5);
+        const photos = await Promise.all(batch.map(name => searchPersonPhoto(name)));
+        batch.forEach((name, idx) => { results[name] = photos[idx]; });
+      }
+      if (!cancelled) {
+        setPersonPhotos(prev => ({ ...prev, ...results }));
+      }
+    };
+    fetchPhotos();
+    return () => { cancelled = true; };
+  }, [cast, directors, writers]);
 
   // Fetch ALL movie data in one API call
   // This calls getMovieFull() which hits /api/movies/:id/full on the backend
@@ -316,22 +349,25 @@ function MovieDetails() {
             <h2>Director{directors.length > 1 ? 's' : ''}</h2>
           </div>
           <div className="cast-list">
-            {directors.map(d => (
-              <div key={d.person_id} className="cast-card">
-                {d.photo_url ? (
-                  <img src={d.photo_url} alt={d.name} className="cast-photo"
-                    onError={(e) => { e.target.src = 'https://via.placeholder.com/80x80/333/fff?text=?'; }} />
-                ) : (
-                  <div className="cast-photo-placeholder">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b949e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            {directors.map(d => {
+              const photoUrl = d.photo_url || personPhotos[d.name];
+              return (
+                <div key={d.person_id} className="cast-card">
+                  {photoUrl ? (
+                    <img src={photoUrl} alt={d.name} className="cast-photo"
+                      onError={(e) => { e.target.src = 'https://via.placeholder.com/80x80/333/fff?text=?'; }} />
+                  ) : (
+                    <div className="cast-photo-placeholder">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b949e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
+                  )}
+                  <div className="cast-info">
+                    <span className="cast-name">{d.name}</span>
+                    <span className="cast-role">Director</span>
                   </div>
-                )}
-                <div className="cast-info">
-                  <span className="cast-name">{d.name}</span>
-                  <span className="cast-role">Director</span>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -344,17 +380,25 @@ function MovieDetails() {
             <h2>Writer{writers.length > 1 ? 's' : ''}</h2>
           </div>
           <div className="cast-list">
-            {writers.map(w => (
-              <div key={w.person_id} className="cast-card">
-                <div className="cast-photo-placeholder">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b949e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+            {writers.map(w => {
+              const photoUrl = w.photo_url || personPhotos[w.name];
+              return (
+                <div key={w.person_id} className="cast-card">
+                  {photoUrl ? (
+                    <img src={photoUrl} alt={w.name} className="cast-photo"
+                      onError={(e) => { e.target.src = 'https://via.placeholder.com/80x80/333/fff?text=?'; }} />
+                  ) : (
+                    <div className="cast-photo-placeholder">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b949e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
+                  )}
+                  <div className="cast-info">
+                    <span className="cast-name">{w.name}</span>
+                    <span className="cast-role">Writer</span>
+                  </div>
                 </div>
-                <div className="cast-info">
-                  <span className="cast-name">{w.name}</span>
-                  <span className="cast-role">Writer</span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -367,24 +411,27 @@ function MovieDetails() {
             <h2>Cast</h2>
           </div>
           <div className="cast-list">
-            {cast.map(a => (
-              <div key={a.person_id} className="cast-card">
-                {a.photo_url ? (
-                  <img src={a.photo_url} alt={a.name} className="cast-photo"
-                    onError={(e) => { e.target.src = 'https://via.placeholder.com/80x80/333/fff?text=?'; }} />
-                ) : (
-                  <div className="cast-photo-placeholder">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b949e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                  </div>
-                )}
-                <div className="cast-info">
-                  <span className="cast-name">{a.name}</span>
-                  {a.character_name && (
-                    <span className="cast-role">as {a.character_name}</span>
+            {cast.map(a => {
+              const photoUrl = a.photo_url || personPhotos[a.name];
+              return (
+                <div key={a.person_id} className="cast-card">
+                  {photoUrl ? (
+                    <img src={photoUrl} alt={a.name} className="cast-photo"
+                      onError={(e) => { e.target.src = 'https://via.placeholder.com/80x80/333/fff?text=?'; }} />
+                  ) : (
+                    <div className="cast-photo-placeholder">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b949e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
                   )}
+                  <div className="cast-info">
+                    <span className="cast-name">{a.name}</span>
+                    {a.character_name && (
+                      <span className="cast-role">as {a.character_name}</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
