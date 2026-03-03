@@ -169,3 +169,7 @@ export const loginUser = (credentials) =>
 // GET /api/users/:userId → Fetch a user's profile
 export const getUserProfile = (userId) => 
   axios.get(`${API_URL}/users/${userId}`);
+
+// ── AI Assistant ────────────────────────────────────────────
+export const aiChat = (userId, message) =>
+  axios.post(`${API_URL}/ai/chat`, { user_id: userId, message });
