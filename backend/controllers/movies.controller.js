@@ -232,10 +232,11 @@ export const getMovieCast = async (req, res) => {
     const { id } = req.params;
 
     const query = `
-      SELECT person_id, name, bio, photo_url, character_name
+      SELECT DISTINCT ON (LOWER(name), LOWER(COALESCE(character_name, '')))
+        person_id, name, bio, photo_url, character_name
       FROM persons
       WHERE movie_id = $1 AND role = 'actor'
-      ORDER BY name
+      ORDER BY LOWER(name), LOWER(COALESCE(character_name, '')), person_id DESC
     `;
 
     const result = await pool.query(query, [id]);
@@ -255,9 +256,11 @@ export const getMovieDirectors = async (req, res) => {
     const { id } = req.params;
 
     const query = `
-      SELECT person_id, name, bio, photo_url
+      SELECT DISTINCT ON (LOWER(name))
+        person_id, name, bio, photo_url
       FROM persons
       WHERE movie_id = $1 AND role = 'director'
+      ORDER BY LOWER(name), person_id DESC
     `;
 
     const result = await pool.query(query, [id]);
@@ -277,9 +280,11 @@ export const getMovieWriters = async (req, res) => {
     const { id } = req.params;
 
     const query = `
-      SELECT person_id, name
+      SELECT DISTINCT ON (LOWER(name))
+        person_id, name
       FROM persons
       WHERE movie_id = $1 AND role = 'writer'
+      ORDER BY LOWER(name), person_id DESC
     `;
 
     const result = await pool.query(query, [id]);
@@ -347,22 +352,27 @@ export const getMovieFull = async (req, res) => {
       `, [id]),
       // Query 2: Cast members (actors + character names)
       pool.query(`
-        SELECT person_id, name, bio, photo_url, character_name
+        SELECT DISTINCT ON (LOWER(name), LOWER(COALESCE(character_name, '')))
+          person_id, name, bio, photo_url, character_name
         FROM persons
         WHERE movie_id = $1 AND role = 'actor'
-        ORDER BY name
+        ORDER BY LOWER(name), LOWER(COALESCE(character_name, '')), person_id DESC
       `, [id]),
       // Query 3: Directors
       pool.query(`
-        SELECT person_id, name, bio, photo_url
+        SELECT DISTINCT ON (LOWER(name))
+          person_id, name, bio, photo_url
         FROM persons
         WHERE movie_id = $1 AND role = 'director'
+        ORDER BY LOWER(name), person_id DESC
       `, [id]),
       // Query 4: Writers
       pool.query(`
-        SELECT person_id, name
+        SELECT DISTINCT ON (LOWER(name))
+          person_id, name
         FROM persons
         WHERE movie_id = $1 AND role = 'writer'
+        ORDER BY LOWER(name), person_id DESC
       `, [id]),
       // Query 5: Similar movies (same genre-based recommendation)
       pool.query(`
