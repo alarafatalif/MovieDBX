@@ -458,7 +458,7 @@ function Home() {
           <div className="about-credits">
             <div className="about-credits-card">
               <div className="about-credits-avatar">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f5c518" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <img src={require('../assets/profile.jpg')} alt="Al Arafat Alif" className="about-credits-photo" />
               </div>
               <div className="about-credits-info">
                 <h3>Designed & Developed by</h3>
