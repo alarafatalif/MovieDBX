@@ -463,7 +463,20 @@ function Home() {
               <div className="about-credits-info">
                 <h3>Designed & Developed by</h3>
                 <p className="about-credits-name">AL ARAFAT ALIF</p>
-                <p className="about-credits-id">Roll: 2305062 &nbsp;|&nbsp; L-1 &nbsp;|&nbsp; T-2 &nbsp;|&nbsp; BUET CSE</p>
+                <div className="about-credits-details">
+                  <div className="about-credits-item">
+                    <span className="about-credits-label">Department</span>
+                    <span className="about-credits-value">BUET CSE</span>
+                  </div>
+                  <div className="about-credits-item">
+                    <span className="about-credits-label">Semester</span>
+                    <span className="about-credits-value">L-1 / T-2</span>
+                  </div>
+                  <div className="about-credits-item">
+                    <span className="about-credits-label">Roll</span>
+                    <span className="about-credits-value">2305062</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

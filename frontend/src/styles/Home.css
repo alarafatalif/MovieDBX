@@ -233,11 +233,35 @@
   background-clip: text;
 }
 
-.about-credits-id {
-  font-size: 0.85rem;
-  color: #8b949e;
-  margin: 0;
+.about-credits-details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 18px;
+  margin-top: 10px;
+}
+
+.about-credits-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  background: rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+}
+
+.about-credits-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.45);
   font-weight: 600;
+}
+
+.about-credits-value {
+  font-size: 0.95rem;
+  color: #e6edf3;
+  font-weight: 700;
 }
 
 @media (max-width: 768px) {
@@ -257,6 +281,10 @@
     flex-direction: column;
     text-align: center;
     padding: 20px;
+  }
+  .about-credits-details {
+    grid-template-columns: 1fr;
+    width: 100%;
   }
 }
 
