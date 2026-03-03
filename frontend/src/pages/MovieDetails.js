@@ -202,6 +202,41 @@ function MovieDetails() {
     : null;
   const isSeries = movie.content_type === 'series';
 
+  const normalizePlatforms = () => {
+    const raw = movie.platforms;
+    let list = [];
+    if (Array.isArray(raw)) {
+      list = raw;
+    } else if (raw && typeof raw === 'string') {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) list = parsed;
+      } catch {}
+    }
+
+    const cleaned = list
+      .map((item) => ({
+        name: (item?.name || '').trim(),
+        url: (item?.url || '').trim()
+      }))
+      .filter((item) => item.name);
+
+    if (cleaned.length === 0 && movie.netflix_url) {
+      return [{ name: 'Netflix', url: movie.netflix_url }];
+    }
+
+    return cleaned;
+  };
+
+  const platforms = normalizePlatforms();
+  const getPlatformClass = (name) => {
+    const key = name.toLowerCase();
+    if (key.includes('netflix')) return 'netflix';
+    if (key.includes('prime')) return 'prime';
+    if (key.includes('disney')) return 'disney';
+    return 'generic';
+  };
+
   // ============================================================
   // RENDER — The JSX that creates the visible UI
   // Organized into sections: Header, Trailer, Seasons, 
@@ -302,6 +337,35 @@ function MovieDetails() {
             </div>
 
             <p className="movie-description">{movie.description}</p>
+
+            {platforms.length > 0 && (
+              <div className="md-platforms">
+                <span className="md-platforms-label">Available on</span>
+                <div className="md-platforms-list">
+                  {platforms.map((platform, idx) => {
+                    const className = `md-platform-chip ${getPlatformClass(platform.name)}`;
+                    if (platform.url) {
+                      return (
+                        <a
+                          key={`${platform.name}-${idx}`}
+                          className={className}
+                          href={platform.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {platform.name}
+                        </a>
+                      );
+                    }
+                    return (
+                      <span key={`${platform.name}-${idx}`} className={className}>
+                        {platform.name}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             <div className="md-actions">
               <button

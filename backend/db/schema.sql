@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS movies (
     poster_url   TEXT,
     trailer_url  TEXT,
     netflix_url  TEXT,
+    platforms    JSONB DEFAULT '[]'::jsonb,
     has_oscar    BOOLEAN DEFAULT false,
     content_type VARCHAR(10) DEFAULT 'movie' CHECK (content_type IN ('movie', 'series')),
     seasons      INTEGER,       -- only for series

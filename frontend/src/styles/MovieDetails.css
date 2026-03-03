@@ -263,6 +263,63 @@
     border: 1px solid rgba(255,255,255,0.05);
     border-radius: 12px;
   }
+
+  .md-platforms {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 10px 0 6px;
+  }
+
+  .md-platforms-label {
+    font-size: 0.85rem;
+    color: #8b949e;
+    font-weight: 600;
+  }
+
+  .md-platforms-list {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .md-platform-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #e6edf3;
+    background: rgba(255,255,255,0.06);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .md-platform-chip:hover {
+    transform: translateY(-1px);
+    border-color: rgba(245, 197, 24, 0.4);
+  }
+
+  .md-platform-chip.netflix {
+    background: rgba(229, 9, 20, 0.15);
+    border-color: rgba(229, 9, 20, 0.35);
+    color: #ffb3b3;
+  }
+
+  .md-platform-chip.prime {
+    background: rgba(0, 112, 196, 0.18);
+    border-color: rgba(0, 112, 196, 0.4);
+    color: #b5dcff;
+  }
+
+  .md-platform-chip.disney {
+    background: rgba(18, 89, 201, 0.18);
+    border-color: rgba(18, 89, 201, 0.4);
+    color: #c2d4ff;
+  }
   
   /* ── Actions ── */
   .md-actions {
