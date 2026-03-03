@@ -48,12 +48,15 @@ export const getSearchSuggestions = async (req, res) => {
     //   ARRAY_AGG → collects all genre names into one array per movie
     //   FILTER (WHERE ... IS NOT NULL) → excludes NULL genres from the array
     let query = `
-      SELECT m.movie_id, m.title, m.poster_url, m.release_year, m.content_type,
-        ARRAY_AGG(DISTINCT g.genre_name) FILTER (WHERE g.genre_name IS NOT NULL) AS genres
-      FROM movies m
-      LEFT JOIN movie_genres mg ON m.movie_id = mg.movie_id
-      LEFT JOIN genres g ON mg.genre_id = g.genre_id
-      WHERE m.title ILIKE $1
+      WITH base AS (
+        SELECT DISTINCT ON (LOWER(m.title), m.content_type)
+          m.movie_id,
+          m.title,
+          m.poster_url,
+          m.release_year,
+          m.content_type
+        FROM movies m
+        WHERE m.title ILIKE $1
     `;
     const values = [`%${q.trim()}%`];  // %...% = match anywhere in title
     let idx = 2;                        // Next parameter index
@@ -65,8 +68,18 @@ export const getSearchSuggestions = async (req, res) => {
       idx++;
     }
 
-    // LIMIT 6 → only return 6 suggestions for the dropdown
-    query += ` GROUP BY m.movie_id ORDER BY m.title ASC LIMIT 6`;
+    query += `
+        ORDER BY LOWER(m.title), m.content_type, m.release_year DESC, m.movie_id DESC
+      )
+      SELECT base.movie_id, base.title, base.poster_url, base.release_year, base.content_type,
+        ARRAY_AGG(DISTINCT g.genre_name) FILTER (WHERE g.genre_name IS NOT NULL) AS genres
+      FROM base
+      LEFT JOIN movie_genres mg ON base.movie_id = mg.movie_id
+      LEFT JOIN genres g ON mg.genre_id = g.genre_id
+      GROUP BY base.movie_id, base.title, base.poster_url, base.release_year, base.content_type
+      ORDER BY base.title ASC
+      LIMIT 6
+    `;
 
     const result = await pool.query(query, values);
     res.json(result.rows);
