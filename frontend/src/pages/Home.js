@@ -463,7 +463,7 @@ function Home() {
               <div className="about-credits-info">
                 <h3>Designed & Developed by</h3>
                 <p className="about-credits-name">AL ARAFAT ALIF</p>
-                <p className="about-credits-id">2305062 &nbsp;|&nbsp; L-1 &nbsp;|&nbsp; T-2</p>
+                <p className="about-credits-id">Roll: 2305062 &nbsp;|&nbsp; L-1 &nbsp;|&nbsp; T-2 &nbsp;|&nbsp; BUET CSE</p>
               </div>
             </div>
           </div>
