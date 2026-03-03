@@ -31,7 +31,7 @@ import {
   addToWatchlist
 } from '../services/api';
 import { useUser } from '../context/UserContext';
-import { searchPersonPhoto, searchMovieRating, searchMovieProviders } from '../services/tmdb';
+import { searchPersonPhoto, searchMovieRating, searchMovieProviders, searchMoviePoster } from '../services/tmdb';
 import '../styles/MovieDetails.css';
 
 function MovieDetails() {
@@ -57,6 +57,7 @@ function MovieDetails() {
   const [personPhotos, setPersonPhotos] = useState({});    // TMDB person photos { name: url }
   const [tmdbRating, setTmdbRating] = useState(null);      // TMDB rating info
   const [tmdbProviders, setTmdbProviders] = useState(null); // TMDB watch providers
+  const [posterSrc, setPosterSrc] = useState(null);         // Poster fallback src
 
   // ── EFFECT: Reload data when movie ID or user changes ──
   // Runs when: 1) navigating to a different movie, 2) user logs in/out
@@ -129,6 +130,23 @@ function MovieDetails() {
     };
 
     fetchProviders();
+    return () => { cancelled = true; };
+  }, [movie]);
+
+  // ── EFFECT: Fetch poster from TMDB if missing in DB ──
+  useEffect(() => {
+    if (!movie) return;
+    setPosterSrc(movie.poster_url || null);
+
+    if (movie.poster_url) return;
+    let cancelled = false;
+
+    const fetchPoster = async () => {
+      const url = await searchMoviePoster(movie.title, movie.release_year);
+      if (!cancelled) setPosterSrc(url || null);
+    };
+
+    fetchPoster();
     return () => { cancelled = true; };
   }, [movie]);
 
@@ -283,9 +301,13 @@ function MovieDetails() {
       {/* ── Movie Header ── */}
       <div className="movie-header">
         <div className="movie-header-content">
-          {movie.poster_url && (
-            <img src={movie.poster_url} alt={movie.title} className="movie-poster-large"
-              onError={(e) => { e.target.style.display = 'none'; }} />
+          {posterSrc ? (
+            <img src={posterSrc} alt={movie.title} className="movie-poster-large"
+              onError={() => setPosterSrc(null)} />
+          ) : (
+            <div className="movie-poster-large poster-skeleton">
+              <div className="poster-skeleton-shine" />
+            </div>
           )}
           <div className="movie-header-info">
             <div className="md-title-row">
