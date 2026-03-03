@@ -31,6 +31,7 @@ const buildContext = async (userId) => {
 
   const watchlistQuery = `
     SELECT m.movie_id, m.title, m.release_year, m.content_type,
+      MAX(w.added_at) AS added_at,
       ARRAY_AGG(DISTINCT g.genre_name) FILTER (WHERE g.genre_name IS NOT NULL) AS genres
     FROM watchlist w
     JOIN movies m ON w.movie_id = m.movie_id
@@ -38,7 +39,7 @@ const buildContext = async (userId) => {
     LEFT JOIN genres g ON mg.genre_id = g.genre_id
     WHERE w.user_id = $1
     GROUP BY m.movie_id
-    ORDER BY w.added_at DESC
+    ORDER BY added_at DESC
     LIMIT 50
   `;
 
