@@ -31,7 +31,7 @@ import {
   addToWatchlist
 } from '../services/api';
 import { useUser } from '../context/UserContext';
-import { searchPersonPhoto, searchMovieRating } from '../services/tmdb';
+import { searchPersonPhoto, searchMovieRating, searchMovieProviders } from '../services/tmdb';
 import '../styles/MovieDetails.css';
 
 function MovieDetails() {
@@ -56,6 +56,7 @@ function MovieDetails() {
   const [reviewError, setReviewError] = useState('');     // Error message for review form
   const [personPhotos, setPersonPhotos] = useState({});    // TMDB person photos { name: url }
   const [tmdbRating, setTmdbRating] = useState(null);      // TMDB rating info
+  const [tmdbProviders, setTmdbProviders] = useState(null); // TMDB watch providers
 
   // ── EFFECT: Reload data when movie ID or user changes ──
   // Runs when: 1) navigating to a different movie, 2) user logs in/out
@@ -109,6 +110,25 @@ function MovieDetails() {
     };
 
     fetchRating();
+    return () => { cancelled = true; };
+  }, [movie]);
+
+  // ── EFFECT: Fetch TMDB watch providers for this title (region BD) ──
+  useEffect(() => {
+    if (!movie?.title) return;
+    let cancelled = false;
+
+    const fetchProviders = async () => {
+      const result = await searchMovieProviders(
+        movie.title,
+        movie.release_year,
+        movie.content_type,
+        'BD'
+      );
+      if (!cancelled) setTmdbProviders(result);
+    };
+
+    fetchProviders();
     return () => { cancelled = true; };
   }, [movie]);
 
@@ -229,6 +249,16 @@ function MovieDetails() {
   };
 
   const platforms = normalizePlatforms();
+  const providerPlatforms = (tmdbProviders?.providers || [])
+    .filter((p) => {
+      const name = (p?.name || '').toLowerCase();
+      return name && !name.includes('hulu') && !name.includes('hbo max') && name !== 'max';
+    })
+    .map((p) => ({
+      name: p.name,
+      url: tmdbProviders?.link || ''
+    }));
+  const availabilityList = providerPlatforms.length > 0 ? providerPlatforms : platforms;
   const getPlatformClass = (name) => {
     const key = name.toLowerCase();
     if (key.includes('netflix')) return 'netflix';
@@ -338,11 +368,11 @@ function MovieDetails() {
 
             <p className="movie-description">{movie.description}</p>
 
-            {platforms.length > 0 && (
+            {availabilityList.length > 0 && (
               <div className="md-platforms">
                 <span className="md-platforms-label">Available on</span>
                 <div className="md-platforms-list">
-                  {platforms.map((platform, idx) => {
+                  {availabilityList.map((platform, idx) => {
                     const className = `md-platform-chip ${getPlatformClass(platform.name)}`;
                     if (platform.url) {
                       return (

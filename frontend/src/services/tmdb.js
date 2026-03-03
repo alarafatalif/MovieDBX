@@ -7,6 +7,7 @@ const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 const posterCache = new Map();
 const personCache = new Map();
 const ratingCache = new Map();
+const providerCache = new Map();
 
 try {
   const saved = sessionStorage.getItem('tmdb_poster_cache');
@@ -32,6 +33,14 @@ try {
   }
 } catch {}
 
+try {
+  const saved = sessionStorage.getItem('tmdb_provider_cache');
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    Object.entries(parsed).forEach(([k, v]) => providerCache.set(k, v));
+  }
+} catch {}
+
 const saveCacheToStorage = () => {
   try {
     const obj = Object.fromEntries(posterCache);
@@ -53,9 +62,17 @@ const saveRatingCacheToStorage = () => {
   } catch {}
 };
 
+const saveProviderCacheToStorage = () => {
+  try {
+    const obj = Object.fromEntries(providerCache);
+    sessionStorage.setItem('tmdb_provider_cache', JSON.stringify(obj));
+  } catch {}
+};
+
 const inFlight = new Map();
 const personInFlight = new Map();
 const ratingInFlight = new Map();
+const providerInFlight = new Map();
 
 export const searchMoviePoster = async (movieTitle, year) => {
   const cacheKey = `${movieTitle}-${year || ''}`;
@@ -176,5 +193,88 @@ export const searchMovieRating = async (movieTitle, year, contentType = 'movie')
   })();
 
   ratingInFlight.set(cacheKey, promise);
+  return promise;
+};
+
+export const searchMovieProviders = async (movieTitle, year, contentType = 'movie', region = 'US') => {
+  if (!movieTitle) return null;
+  const type = contentType === 'series' ? 'tv' : 'movie';
+  const cacheKey = `${type}-${movieTitle}-${year || ''}-${region}`.toLowerCase();
+
+  if (providerCache.has(cacheKey)) {
+    return providerCache.get(cacheKey);
+  }
+
+  if (providerInFlight.has(cacheKey)) {
+    return providerInFlight.get(cacheKey);
+  }
+
+  const promise = (async () => {
+    try {
+      const searchEndpoint = type === 'tv' ? 'search/tv' : 'search/movie';
+      const searchParams = { api_key: TMDB_API_KEY, query: movieTitle };
+      if (year) {
+        searchParams[type === 'tv' ? 'first_air_date_year' : 'year'] = year;
+      }
+
+      const searchResponse = await axios.get(`${TMDB_BASE_URL}/${searchEndpoint}`, {
+        params: searchParams
+      });
+
+      if (!searchResponse.data.results.length) {
+        providerCache.set(cacheKey, null);
+        saveProviderCacheToStorage();
+        return null;
+      }
+
+      const tmdbId = searchResponse.data.results[0].id;
+      const providersEndpoint = type === 'tv'
+        ? `tv/${tmdbId}/watch/providers`
+        : `movie/${tmdbId}/watch/providers`;
+
+      const providersResponse = await axios.get(`${TMDB_BASE_URL}/${providersEndpoint}`, {
+        params: { api_key: TMDB_API_KEY }
+      });
+
+      const regionData = providersResponse.data.results?.[region];
+      if (!regionData) {
+        providerCache.set(cacheKey, null);
+        saveProviderCacheToStorage();
+        return null;
+      }
+
+      const providers = [
+        ...(regionData.flatrate || []),
+        ...(regionData.buy || []),
+        ...(regionData.rent || [])
+      ];
+
+      const uniqueProviders = new Map();
+      providers.forEach((p) => {
+        if (p?.provider_name && !uniqueProviders.has(p.provider_id)) {
+          uniqueProviders.set(p.provider_id, {
+            name: p.provider_name,
+            logoPath: p.logo_path || null
+          });
+        }
+      });
+
+      const result = {
+        link: regionData.link || null,
+        providers: Array.from(uniqueProviders.values())
+      };
+
+      providerCache.set(cacheKey, result);
+      saveProviderCacheToStorage();
+      return result;
+    } catch (error) {
+      console.error('Error fetching providers:', error);
+      return null;
+    } finally {
+      providerInFlight.delete(cacheKey);
+    }
+  })();
+
+  providerInFlight.set(cacheKey, promise);
   return promise;
 };
