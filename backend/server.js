@@ -8,7 +8,6 @@ import genresRoutes from './routes/genres.routes.js';
 import watchlistRoutes from './routes/watchlist.routes.js';
 import reviewsRoutes from './routes/reviews.routes.js';
 import usersRoutes from './routes/users.routes.js';
-import aiRoutes from './routes/ai.routes.js';
 
 dotenv.config();
 
@@ -40,7 +39,6 @@ app.use('/api/genres', genresRoutes);
 app.use('/api/watchlist', watchlistRoutes);
 app.use('/api/reviews', reviewsRoutes);
 app.use('/api/users', usersRoutes);
-app.use('/api/ai', aiRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ error: `Route ${req.path} not found` });

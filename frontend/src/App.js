@@ -8,7 +8,6 @@ import Watchlist from './pages/Watchlist';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Landing from './pages/Landing';
-import ChatWidget from './components/ChatWidget';
 import './App.css';
 
 function Navbar() {
@@ -123,7 +122,6 @@ function AppContent() {
         </motion.div>
       </AnimatePresence>
 
-      <ChatWidget />
       {!isLandingPage && <Footer />}
     </div>
   );
