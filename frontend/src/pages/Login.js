@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginUser } from '../services/api';
 import { useUser } from '../context/UserContext';
@@ -13,6 +13,7 @@ function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const passwordRef = useRef(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,12 +26,21 @@ function Login() {
     try {
       setLoading(true);
       const response = await loginUser(formData);
-      login(response.data.user);
+      login(response.data.user, response.data.token);
       navigate('/home');
     } catch (err) {
       setError(err.response?.data?.error || 'Invalid credentials. Please check your username and password.');
       setLoading(false);
     }
+  };
+
+  const loginAsAdmin = () => {
+    setError('');
+    setFormData({ username: 'Alif', password: '' });
+    setShowPassword(false);
+    requestAnimationFrame(() => {
+      passwordRef.current?.focus();
+    });
   };
 
   return (
@@ -185,6 +195,7 @@ function Login() {
                     placeholder="Enter your password"
                     required
                     autoComplete="current-password"
+                    ref={passwordRef}
                   />
                   <button
                     type="button"
@@ -219,8 +230,17 @@ function Login() {
             </div>
 
             <button
+              className="auth-admin-btn"
+              onClick={loginAsAdmin}
+              disabled={loading}
+            >
+              Login as Admin
+            </button>
+
+            <button
               className="auth-guest-btn"
               onClick={() => navigate('/home')}
+              disabled={loading}
             >
               Continue as Guest
             </button>

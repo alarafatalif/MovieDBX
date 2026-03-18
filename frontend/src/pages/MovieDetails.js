@@ -31,7 +31,7 @@ import {
   addToWatchlist
 } from '../services/api';
 import { useUser } from '../context/UserContext';
-import { searchPersonPhoto, searchMovieRating, searchMovieProviders, searchMoviePoster } from '../services/tmdb';
+import { searchPersonPhoto, searchMovieRating, searchMoviePoster, searchMovieProviders } from '../services/tmdb';
 import '../styles/MovieDetails.css';
 
 function MovieDetails() {
@@ -132,6 +132,7 @@ function MovieDetails() {
     fetchProviders();
     return () => { cancelled = true; };
   }, [movie]);
+
 
   // ── EFFECT: Fetch poster from TMDB if missing in DB ──
   useEffect(() => {

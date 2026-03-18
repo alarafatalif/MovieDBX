@@ -22,7 +22,23 @@
 // ============================================================
 
 import pool from '../db/db.js';
+import { logActivity } from './activities.controller.js';
 import bcrypt from 'bcrypt';   // Password hashing library
+import jwt from 'jsonwebtoken';
+
+const getJwtSecret = () => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET is not set');
+  }
+  return process.env.JWT_SECRET;
+};
+
+const buildToken = (user) =>
+  jwt.sign(
+    { user_id: user.user_id, is_admin: user.is_admin },
+    getJwtSecret(),
+    { expiresIn: '7d' }
+  );
 
 // ============================================================
 // POST /api/users/register → Register a New User
@@ -78,17 +94,27 @@ export const registerUser = async (req, res) => {
     // Notice: we store hashedPassword, NOT the plain password.
     // RETURNING clause specifies which columns to return — we
     // deliberately EXCLUDE password_hash from the response.
+    const isAdmin = username.trim().toLowerCase() === 'alif';
+
     const result = await pool.query(
-      `INSERT INTO users (username, email, password_hash) 
-       VALUES ($1, $2, $3) 
-       RETURNING user_id, username, email, created_at`,
-      [username, email, hashedPassword]
+      `INSERT INTO users (username, email, password_hash, is_admin) 
+       VALUES ($1, $2, $3, $4) 
+       RETURNING user_id, username, email, created_at, is_admin`,
+      [username, email, hashedPassword, isAdmin]
     );
 
+    await logActivity({
+      userId: result.rows[0].user_id,
+      actionType: 'user_registered'
+    });
+
     // 201 = "Created" status code (standard for successful POST)
+    const token = buildToken(result.rows[0]);
+
     res.status(201).json({
       message: 'User registered successfully',
-      user: result.rows[0]
+      user: result.rows[0],
+      token
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -120,7 +146,7 @@ export const loginUser = async (req, res) => {
 
     // Fetch the user by username — we need password_hash for comparison
     const result = await pool.query(
-      'SELECT user_id, username, email, password_hash, created_at FROM users WHERE username = $1',
+      'SELECT user_id, username, email, password_hash, created_at, is_admin FROM users WHERE username = $1',
       [username]
     );
 
@@ -130,6 +156,14 @@ export const loginUser = async (req, res) => {
     }
 
     const user = result.rows[0];
+
+    if (user.username.toLowerCase() === 'alif' && !user.is_admin) {
+      const updated = await pool.query(
+        'UPDATE users SET is_admin = true WHERE user_id = $1 RETURNING is_admin',
+        [user.user_id]
+      );
+      user.is_admin = updated.rows[0].is_admin;
+    }
 
     // bcrypt.compare(plainPassword, storedHash) → returns true/false
     // It takes the typed password, hashes it the same way, and checks if it matches
@@ -141,14 +175,18 @@ export const loginUser = async (req, res) => {
 
     // Login successful! Return user data WITHOUT the password_hash.
     // The frontend stores this in localStorage to keep the user logged in.
+    const token = buildToken(user);
+
     res.json({
       message: 'Login successful',
       user: {
         user_id: user.user_id,
         username: user.username,
         email: user.email,
-        created_at: user.created_at
-      }
+        created_at: user.created_at,
+        is_admin: user.is_admin
+      },
+      token
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -177,7 +215,7 @@ export const getUserProfile = async (req, res) => {
 
     // Step 1: Get basic user info
     const userResult = await pool.query(
-      'SELECT user_id, username, email, created_at FROM users WHERE user_id = $1',
+      'SELECT user_id, username, email, created_at, is_admin FROM users WHERE user_id = $1',
       [userId]
     );
 
@@ -217,7 +255,7 @@ export const getUserProfile = async (req, res) => {
 
     // Combine everything into a single response object
     res.json({
-      ...userResult.rows[0],          // user_id, username, email, created_at
+      ...userResult.rows[0],          // user_id, username, email, created_at, is_admin
       stats: {
         total_reviews: parseInt(stats.total_reviews),
         avg_rating_given: stats.avg_rating_given ? parseFloat(stats.avg_rating_given) : null,
@@ -225,6 +263,60 @@ export const getUserProfile = async (req, res) => {
       },
       recent_reviews: reviewsResult.rows   // Last 5 reviews
     });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// ============================================================
+// GET /api/users → Admin: list all users
+// ============================================================
+export const getAllUsers = async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT user_id, username, email, created_at, is_admin FROM users ORDER BY created_at DESC'
+    );
+    res.json(result.rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// ============================================================
+// DELETE /api/users/:userId → Admin: delete user
+// ============================================================
+export const deleteUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const targetId = Number(userId);
+
+    if (!Number.isInteger(targetId)) {
+      return res.status(400).json({ error: 'Invalid user ID' });
+    }
+
+    if (req.user && req.user.user_id === targetId) {
+      return res.status(400).json({ error: 'Admin cannot delete own account' });
+    }
+
+    const target = await pool.query(
+      'SELECT user_id, is_admin FROM users WHERE user_id = $1',
+      [targetId]
+    );
+
+    if (target.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (target.rows[0].is_admin) {
+      return res.status(400).json({ error: 'Cannot delete an admin account' });
+    }
+
+    const result = await pool.query(
+      'DELETE FROM users WHERE user_id = $1 RETURNING user_id, username, email, created_at, is_admin',
+      [targetId]
+    );
+
+    res.json({ message: 'User deleted successfully', user: result.rows[0] });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -8,6 +8,7 @@ import Watchlist from './pages/Watchlist';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Landing from './pages/Landing';
+import Admin from './pages/Admin';
 import './App.css';
 
 function Navbar() {
@@ -27,6 +28,11 @@ function Navbar() {
           <Link to="/watchlist" className={`nav-link ${isActive('/watchlist') ? 'active' : ''}`}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
             {' '}Watchlist
+          </Link>
+        )}
+        {user?.is_admin && (
+          <Link to="/admin" className={`nav-link ${isActive('/admin') ? 'active' : ''}`}>
+            Admin
           </Link>
         )}
       </div>
@@ -115,6 +121,12 @@ function AppContent() {
             <Route 
               path="/watchlist" 
               element={user ? <Watchlist /> : <Navigate to="/login" />} 
+            />
+            <Route
+              path="/admin"
+              element={
+                user ? (user.is_admin ? <Admin /> : <Navigate to="/home" />) : <Navigate to="/login" />
+              }
             />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />

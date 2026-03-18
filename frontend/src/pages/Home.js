@@ -42,12 +42,13 @@ function Home() {
   const [selectedGenre, setSelectedGenre] = useState('');  // Currently selected genre filter
   const [searchQuery, setSearchQuery] = useState('');      // Current search input text
   const [showOscarOnly, setShowOscarOnly] = useState(false); // Oscar filter toggle
+  const [selectedPlatform, setSelectedPlatform] = useState(''); // Platform filter
   const [sortBy, setSortBy] = useState('default');         // Sort field: 'default', 'rating', 'year'
   const [sortDirection, setSortDirection] = useState('desc'); // Sort order: 'desc' or 'asc'
   const [showSortMenu, setShowSortMenu] = useState(false);   // Sort dropdown visibility
   const sortRef = useRef(null);    // Reference to sort dropdown (for click-outside detection)
   const [loading, setLoading] = useState(true);   // Show loading spinner
-  
+
   // Search autocomplete state
   const [suggestions, setSuggestions] = useState([]);        // Search autocomplete results
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -81,8 +82,9 @@ function Home() {
     setSearchQuery('');
     setSortBy('default');
     setSortDirection('desc');
+    setSelectedPlatform('');
     loadGenres();
-    loadMovies(type);
+    loadMovies(type, '');
   }, [contentFilter]);
 
   // ── EFFECT: Derive top-rated and trending from the main movies list ──
@@ -193,7 +195,7 @@ function Home() {
   }, []);
 
   // ── DATA LOADING FUNCTIONS ──
-  
+
   // Fetch all available genres for the filter dropdown
   const loadGenres = async () => {
     try {
@@ -205,15 +207,16 @@ function Home() {
   };
 
   // Fetch all movies with their ratings (main data source for the grid)
-  const loadMovies = async (type) => {
+  const loadMovies = async (type, platformOverride = selectedPlatform) => {
     try {
       setLoading(true);
       const response = await getAllMoviesWithRatings(type);
-      setMovies(response.data);
+      const filtered = applyPlatformFilter(response.data, platformOverride);
+      setMovies(filtered);
       // Generate "For You" section: shuffle all movies randomly and take 12
       // Math.random() - 0.5 produces values between -0.5 and 0.5,
       // which randomizes the sort order
-      const shuffled = [...response.data].sort(() => Math.random() - 0.5);
+      const shuffled = [...filtered].sort(() => Math.random() - 0.5);
       setForYouMovies(shuffled.slice(0, 12));
       setLoading(false);
     } catch (error) {
@@ -283,12 +286,13 @@ function Home() {
     setShowOscarOnly(false);
     setSearchQuery('');
     if (genre === '') {
-      loadMovies(getContentType());
+      loadMovies(getContentType(), selectedPlatform);
     } else {
       try {
         setLoading(true);
         const response = await filterByGenre(genre, getContentType());
-        setMovies(response.data);
+        const filtered = applyPlatformFilter(response.data, selectedPlatform);
+        setMovies(filtered);
         setLoading(false);
       } catch (error) {
         console.error('Error filtering by genre:', error);
@@ -306,14 +310,15 @@ function Home() {
       try {
         setLoading(true);
         const response = await filterByOscar(getContentType());
-        setMovies(response.data);
+        const filtered = applyPlatformFilter(response.data, selectedPlatform);
+        setMovies(filtered);
         setLoading(false);
       } catch (error) {
         console.error('Error filtering Oscar movies:', error);
         setLoading(false);
       }
     } else {
-      loadMovies(getContentType());
+      loadMovies(getContentType(), selectedPlatform);
     }
   };
 
@@ -325,18 +330,61 @@ function Home() {
     setShowSuggestions(false);
     setSuggestions([]);
     if (searchQuery.trim() === '') {
-      loadMovies(getContentType());
+      loadMovies(getContentType(), selectedPlatform);
     } else {
       try {
         setLoading(true);
         const response = await searchMovies(searchQuery, getContentType());
-        setMovies(response.data);
+        const filtered = applyPlatformFilter(response.data, selectedPlatform);
+        setMovies(filtered);
         setLoading(false);
       } catch (error) {
         console.error('Error searching movies:', error);
         setLoading(false);
       }
     }
+  };
+
+  const handlePlatformFilter = (platform) => {
+    setSelectedPlatform(platform);
+    setSelectedGenre('');
+    setShowOscarOnly(false);
+    setSearchQuery('');
+    setSortBy('default');
+    setSortDirection('desc');
+    loadMovies(getContentType(), platform);
+  };
+
+  const getMoviePlatforms = (movie) => {
+    let list = [];
+    const raw = movie.platforms;
+    if (Array.isArray(raw)) {
+      list = raw;
+    } else if (raw && typeof raw === 'string') {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) list = parsed;
+      } catch {}
+    }
+
+    const names = list
+      .map((item) => (typeof item === 'string' ? item : item?.name))
+      .map((name) => (name || '').trim())
+      .filter(Boolean);
+
+    if (names.length === 0 && movie.netflix_url) {
+      names.push('Netflix');
+    }
+
+    return names;
+  };
+
+  const applyPlatformFilter = (list, platform) => {
+    if (!platform) return list;
+    const target = platform.toLowerCase();
+    return list.filter((movie) =>
+      getMoviePlatforms(movie).some((name) => name.toLowerCase() === target)
+    );
   };
 
   return (
@@ -561,6 +609,16 @@ function Home() {
                 </option>
               ))}
             </select>
+            <select
+              value={selectedPlatform}
+              onChange={(e) => handlePlatformFilter(e.target.value)}
+              className="platform-select"
+            >
+              <option value="">All Platforms</option>
+              <option value="Netflix">Netflix</option>
+              <option value="Prime Video">Prime Video</option>
+              <option value="Disney+">Disney+</option>
+            </select>
           </div>
 
           <div className="toolbar-right">
@@ -629,7 +687,8 @@ function Home() {
               setSearchQuery('');
               setSortBy('default');
               setSortDirection('desc');
-              loadMovies(getContentType());
+              setSelectedPlatform('');
+              loadMovies(getContentType(), '');
             }} className="clear-all-btn">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               Clear All
@@ -637,7 +696,7 @@ function Home() {
           </div>
         </div>
 
-        {(selectedGenre || showOscarOnly || searchQuery || sortBy !== 'default') && (
+        {(selectedGenre || showOscarOnly || searchQuery || selectedPlatform || sortBy !== 'default') && (
           <div className="active-filters">
             {selectedGenre && (
               <span className="active-filter">
@@ -654,7 +713,13 @@ function Home() {
             {searchQuery && (
               <span className="active-filter">
                 Search: "{searchQuery}"
-                <button onClick={() => { setSearchQuery(''); loadMovies(getContentType()); }}>✕</button>
+                <button onClick={() => { setSearchQuery(''); loadMovies(getContentType(), selectedPlatform); }}>✕</button>
+              </span>
+            )}
+            {selectedPlatform && (
+              <span className="active-filter">
+                Platform: {selectedPlatform}
+                <button onClick={() => handlePlatformFilter('')}>✕</button>
               </span>
             )}
             {sortBy !== 'default' && (

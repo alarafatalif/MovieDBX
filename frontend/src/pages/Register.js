@@ -49,7 +49,7 @@ function Register() {
         email: formData.email,
         password: formData.password
       });
-      login(response.data.user);
+      login(response.data.user, response.data.token);
       navigate('/home');
     } catch (err) {
       setError(err.response?.data?.error || 'Registration failed. Please try again.');

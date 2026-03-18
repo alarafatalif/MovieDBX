@@ -24,6 +24,7 @@
 // ============================================================
 
 import pool from '../db/db.js';
+import { logActivity } from './activities.controller.js';
 
 // ============================================================
 // POST /api/watchlist → Add Movie to Watchlist
@@ -58,6 +59,12 @@ export const addToWatchlist = async (req, res) => {
       'INSERT INTO watchlist (user_id, movie_id) VALUES ($1, $2) RETURNING *',
       [user_id, movie_id]
     );
+
+    await logActivity({
+      userId: user_id,
+      movieId: movie_id,
+      actionType: 'watchlist_add'
+    });
 
     res.status(201).json({
       message: 'Movie added to watchlist',
@@ -130,6 +137,12 @@ export const removeFromWatchlist = async (req, res) => {
       return res.status(404).json({ error: 'Movie not in watchlist' });
     }
 
+    await logActivity({
+      userId: userId,
+      movieId: movieId,
+      actionType: 'watchlist_remove'
+    });
+
     res.json({ message: 'Movie removed from watchlist' });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -190,6 +203,12 @@ export const toggleWatched = async (req, res) => {
       'UPDATE watchlist SET watched = $1 WHERE user_id = $2 AND movie_id = $3 RETURNING *',
       [newStatus, userId, movieId]
     );
+
+    await logActivity({
+      userId: userId,
+      movieId: movieId,
+      actionType: newStatus ? 'watchlist_watched' : 'watchlist_unwatched'
+    });
 
     res.json({
       message: `Movie marked as ${newStatus ? 'watched' : 'unwatched'}`,

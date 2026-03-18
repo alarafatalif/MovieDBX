@@ -648,18 +648,19 @@ INSERT INTO persons (movie_id, name, role, character_name, bio, photo_url) VALUE
 ((SELECT movie_id FROM movies WHERE title = 'Joker' AND content_type = 'movie' LIMIT 1), 'Zazie Beetz', 'actor', 'Sophie Dumond', NULL, NULL),
 ((SELECT movie_id FROM movies WHERE title = 'Joker' AND content_type = 'movie' LIMIT 1), 'Frances Conroy', 'actor', 'Penny Fleck', NULL, NULL);
 
-INSERT INTO users (username, email, password_hash) VALUES
-('john_doe', 'john@example.com', 'hashed_password_123'),
-('jane_smith', 'jane@example.com', 'hashed_password_456'),
-('movie_lover', 'lover@example.com', 'hashed_password_789'),
-('CinematicCritic', 'critic@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2'),
-('FilmFanatic92', 'fanatic@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2'),
-('ReelTalkReviews', 'reeltalk@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2'),
-('PopcornPundit', 'popcorn@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2'),
-('ScreenSavant', 'savant@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2'),
-('MovieMaven', 'maven@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2'),
-('TheFrameJunkie', 'frame@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2'),
-('BingeWatcher101', 'binge@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2')
+INSERT INTO users (username, email, password_hash, is_admin) VALUES
+('Alif', 'alif@moviedbx.com', '$2b$10$O/qtcM5sgOWsIINZcrD8AOlcbn.XWKFKOTY8eAQjnbToG8QDQd3M2', true),
+('john_doe', 'john@example.com', 'hashed_password_123', false),
+('jane_smith', 'jane@example.com', 'hashed_password_456', false),
+('movie_lover', 'lover@example.com', 'hashed_password_789', false),
+('CinematicCritic', 'critic@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2', false),
+('FilmFanatic92', 'fanatic@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2', false),
+('ReelTalkReviews', 'reeltalk@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2', false),
+('PopcornPundit', 'popcorn@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2', false),
+('ScreenSavant', 'savant@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2', false),
+('MovieMaven', 'maven@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2', false),
+('TheFrameJunkie', 'frame@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2', false),
+('BingeWatcher101', 'binge@moviedbx.com', '$2b$10$xqGv00POKseep7z8FcNTpuTdGOAJxd8Ft5CwgInTWqz6AwKpPq.K2', false)
 ON CONFLICT (username) DO NOTHING;
 
 INSERT INTO reviews (movie_id, user_id, rating, review_text) VALUES

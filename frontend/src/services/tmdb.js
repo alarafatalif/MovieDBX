@@ -6,8 +6,8 @@ const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 const posterCache = new Map();
 const personCache = new Map();
-const ratingCache = new Map();
 const providerCache = new Map();
+const ratingCache = new Map();
 
 try {
   const saved = sessionStorage.getItem('tmdb_poster_cache');
@@ -41,6 +41,7 @@ try {
   }
 } catch {}
 
+
 const saveCacheToStorage = () => {
   try {
     const obj = Object.fromEntries(posterCache);
@@ -69,10 +70,11 @@ const saveProviderCacheToStorage = () => {
   } catch {}
 };
 
+
 const inFlight = new Map();
 const personInFlight = new Map();
-const ratingInFlight = new Map();
 const providerInFlight = new Map();
+const ratingInFlight = new Map();
 
 export const searchMoviePoster = async (movieTitle, year) => {
   const cacheKey = `${movieTitle}-${year || ''}`;
@@ -278,3 +280,4 @@ export const searchMovieProviders = async (movieTitle, year, contentType = 'movi
   providerInFlight.set(cacheKey, promise);
   return promise;
 };
+

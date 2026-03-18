@@ -20,9 +20,10 @@ export const UserProvider = ({ children }) => {
     }
   });
 
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('moviedbx_user', JSON.stringify(userData)); // Persist to browser storage
+  const login = (userData, token) => {
+    const payload = token ? { ...userData, token } : userData;
+    setUser(payload);
+    localStorage.setItem('moviedbx_user', JSON.stringify(payload)); // Persist to browser storage
   };
 
   const logout = () => {

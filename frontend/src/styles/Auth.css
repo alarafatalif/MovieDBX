@@ -488,6 +488,34 @@
   border-color: rgba(255,255,255,0.2);
 }
 
+/* ── Admin button ── */
+.auth-admin-btn {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, rgba(245, 197, 24, 0.2), rgba(31, 122, 109, 0.3));
+  color: #f5e9c4;
+  border: 1px solid rgba(245, 197, 24, 0.35);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+  transition: all 0.25s;
+}
+
+.auth-admin-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(245, 197, 24, 0.3), rgba(31, 122, 109, 0.4));
+  box-shadow: 0 8px 22px rgba(245, 197, 24, 0.2);
+  transform: translateY(-1px);
+}
+
+.auth-admin-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* ── Spinner ── */
 .auth-spinner {
   width: 20px;

@@ -13,6 +13,7 @@ import {
   getTopRatedMovies,
   getSearchSuggestions
 } from '../controllers/movies.controller.js';
+import { requireAuth, requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -49,9 +50,9 @@ router.get('/:id/writers', getMovieWriters);
 router.get('/:id/similar', getSimilarMovies);
 
 // POST /api/movies → Add a brand new movie to the database
-router.post('/', addMovie);
+router.post('/', requireAuth, requireAdmin, addMovie);
 
 // DELETE /api/movies/5 → Delete movie ID 5 (CASCADE removes all related data)
-router.delete('/:id', deleteMovie);
+router.delete('/:id', requireAuth, requireAdmin, deleteMovie);
 
 export default router;

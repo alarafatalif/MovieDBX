@@ -549,7 +549,22 @@ export const getTopRatedMovies = async (req, res) => {
 export const addMovie = async (req, res) => {
   try {
     // Destructure all fields from the request body
-    const { title, description, release_year, duration, poster_url, trailer_url, has_oscar, genres, content_type, seasons } = req.body;
+    const {
+      title,
+      description,
+      release_year,
+      duration,
+      poster_url,
+      trailer_url,
+      netflix_url,
+      platforms,
+      has_oscar,
+      genres,
+      content_type,
+      seasons,
+      total_episodes,
+      episodes_per_season
+    } = req.body;
 
     // Title is the only required field
     if (!title) {
@@ -558,17 +573,47 @@ export const addMovie = async (req, res) => {
 
     // Step 1: Insert the movie itself
     // RETURNING * → gives us back the full inserted row (including auto-generated movie_id)
+    const normalizedType = content_type === 'series' ? 'series' : 'movie';
+    const hasOscar = has_oscar === true || has_oscar === 'true';
+    const platformList = Array.isArray(platforms) ? platforms : [];
+    const episodesPayload = episodes_per_season && typeof episodes_per_season === 'object'
+      ? episodes_per_season
+      : null;
+
     const movieQuery = `
-      INSERT INTO movies (title, description, release_year, duration, poster_url, trailer_url, has_oscar, content_type, seasons)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      INSERT INTO movies (
+        title,
+        description,
+        release_year,
+        duration,
+        poster_url,
+        trailer_url,
+        netflix_url,
+        platforms,
+        has_oscar,
+        content_type,
+        seasons,
+        total_episodes,
+        episodes_per_season
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
       RETURNING *
     `;
 
     const movieResult = await pool.query(movieQuery, [
-      title, description, release_year, duration, poster_url, trailer_url,
-      has_oscar || false,           // Default to false if not provided
-      content_type || 'movie',       // Default to 'movie' if not provided
-      seasons || null                // Only relevant for series
+      title,
+      description,
+      release_year,
+      duration,
+      poster_url,
+      trailer_url,
+      netflix_url,
+      platformList,
+      hasOscar,
+      normalizedType,
+      seasons || null,
+      total_episodes || null,
+      episodesPayload
     ]);
 
     const newMovie = movieResult.rows[0];

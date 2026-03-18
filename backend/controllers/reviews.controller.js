@@ -1,4 +1,5 @@
 import pool from '../db/db.js';
+import { logActivity } from './activities.controller.js';
 
 // ============================================================
 // reviews.controller.js — Review Business Logic (CRUD)
@@ -88,6 +89,13 @@ export const addReview = async (req, res) => {
        RETURNING *`,
       [user_id, movie_id, rating, review_text]
     );
+
+    await logActivity({
+      userId: user_id,
+      movieId: movie_id,
+      actionType: 'review_added',
+      rating
+    });
 
     // 201 = "Created" — standard status code for successful POST operations
     res.status(201).json({
