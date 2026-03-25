@@ -25,13 +25,7 @@ import pool from '../db/db.js';
 import { logActivity } from './activities.controller.js';
 import bcrypt from 'bcrypt';   // Password hashing library
 import jwt from 'jsonwebtoken';
-
-const getJwtSecret = () => {
-  if (!process.env.JWT_SECRET) {
-    throw new Error('JWT_SECRET is not set');
-  }
-  return process.env.JWT_SECRET;
-};
+import { getJwtSecret } from '../utils/jwtSecret.js';
 
 const buildToken = (user) =>
   jwt.sign(

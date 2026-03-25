@@ -1,11 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const getJwtSecret = () => {
-  if (!process.env.JWT_SECRET) {
-    throw new Error('JWT_SECRET is not set');
-  }
-  return process.env.JWT_SECRET;
-};
+import { getJwtSecret } from '../utils/jwtSecret.js';
 
 export const requireAuth = (req, res, next) => {
   const authHeader = req.headers.authorization || '';
@@ -20,9 +15,7 @@ export const requireAuth = (req, res, next) => {
     req.user = payload;
     return next();
   } catch (error) {
-    const status = error.message === 'JWT_SECRET is not set' ? 500 : 401;
-    const message = error.message === 'JWT_SECRET is not set' ? error.message : 'Invalid token';
-    return res.status(status).json({ error: message });
+    return res.status(401).json({ error: 'Invalid token' });
   }
 };
 
