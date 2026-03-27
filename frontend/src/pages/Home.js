@@ -518,7 +518,7 @@ function Home() {
                   </div>
                   <div className="about-credits-item">
                     <span className="about-credits-label">Semester</span>
-                    <span className="about-credits-value">L-1 / T-2</span>
+                    <span className="about-credits-value">L-2 / T-1</span>
                   </div>
                   <div className="about-credits-item">
                     <span className="about-credits-label">Roll</span>
