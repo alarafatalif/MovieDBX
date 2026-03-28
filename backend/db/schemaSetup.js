@@ -4,8 +4,6 @@ import fs from 'fs';                             // File system — to read sche
 import { fileURLToPath } from 'url';             // Converts ES module URL to file path
 import { dirname, join } from 'path';            // Path utilities for cross-OS compatibility
 
-// In ES modules, __filename and __dirname don't exist by default.
-// These two lines recreate them so we can locate schema.sql reliably.
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -17,7 +15,6 @@ const setupDatabase = async () => {
     const schema = fs.readFileSync(schemaPath, 'utf8');
     // Execute all the CREATE TABLE statements at once
     await pool.query(schema);
-
     console.log('All tables created (users, movies, genres, persons, reviews, watchlist, junction tables)');
     console.log('Database setup complete!');
     await pool.end();

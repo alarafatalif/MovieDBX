@@ -1,37 +1,23 @@
-// ================================================================
-// MOVIES CONTROLLER — The heart of the application
-// ================================================================
-// This is the BIGGEST controller in the project. It handles:
-//   - Searching movies (autocomplete + full search)
-//   - Listing movies with filters (genre, oscar, type)
-//   - Getting full movie details (cast, directors, reviews, etc.)
-//   - Finding similar movies (SQL-based recommendation)
-//   - Top rated movies
-//   - Adding and deleting movies
-//
-// SQL CONCEPTS used heavily here:
-// ─────────────────────────────────
+//the main part
+
+// Searching movies (autocomplete + full search)
+// Listing movies with filters (genre, oscar, type)
+// Getting full movie details (cast, directors, reviews, etc.)
+// Finding similar movies (SQL-based recommendation)
+// Top rated movies
+// Adding and deleting movies
+
+
+
 //   ILIKE '%text%'      → Case-insensitive search (PostgreSQL-specific)
 //   ARRAY_AGG(DISTINCT)  → Combine multiple rows into one array
 //   LEFT JOIN            → Keep all movies even if no match in joined table
 //   Subqueries           → A query inside another query (used for filters)
 //   Promise.all()        → Run multiple DB queries at the same time
 //   Dynamic query building → Adding WHERE clauses based on user filters
-//
-// PARAMETERIZED QUERIES ($1, $2, ...):
-//   → NEVER build SQL strings with user input like `WHERE title = '${title}'`
-//   → That allows SQL injection attacks!
-//   → Always use $1, $2 placeholders with a values array
-// ================================================================
-import pool from '../db/db.js';
 
-// ============================================================
-// GET /api/movies/search?q=bat&type=movie → Search Suggestions
-// ============================================================
-// Lightweight endpoint used by the search bar's autocomplete.
-// Returns max 6 results with just enough data for the dropdown.
-// Uses ILIKE for case-insensitive partial matching.
-// ============================================================
+import pool from '../db/db.js';
+//Search Suggestions
 export const getSearchSuggestions = async (req, res) => {
   try {
     // q = search text, type = optional filter ('movie' or 'series')
@@ -42,7 +28,7 @@ export const getSearchSuggestions = async (req, res) => {
       return res.json([]);
     }
 
-    // Build the search query:
+    //search query:
     //   ILIKE $1 → case-insensitive pattern matching
     //   '%text%' → matches "text" anywhere in the title
     //   ARRAY_AGG → collects all genre names into one array per movie
@@ -88,31 +74,13 @@ export const getSearchSuggestions = async (req, res) => {
   }
 };
 
-// ============================================================
+
 // GET /api/movies → Get All Movies (with optional filters)
-// ============================================================
-// This is the MAIN endpoint used by the Home page.
-// It supports multiple filters that can be combined:
-//   ?genre=Action         → only Action movies
-//   ?oscar=true           → only Oscar winners
-//   ?search=batman        → title contains "batman"
-//   ?type=series           → only TV series
-//   ?genre=Drama&oscar=true → Drama + Oscar winner (combined)
-//
-// DYNAMIC QUERY BUILDING:
-//   Instead of writing 16 separate queries for every filter
-//   combination, we build the query dynamically:
-//   1. Start with the base query (all movies with genres)
-//   2. For each filter the user provides, add a WHERE condition
-//   3. Combine conditions with AND
-//   This is a very common pattern in real-world APIs.
-// ============================================================
 export const getAllMovies = async (req, res) => {
   try {
     // Extract all possible filters from the query string
     const { genre, oscar, search, type } = req.query;
 
-    // Base query: get all movies with their genres aggregated into an array
     // DISTINCT m.* → avoid duplicate movie rows when joining multiple tables
     let query = `
       SELECT DISTINCT m.*,
@@ -121,9 +89,6 @@ export const getAllMovies = async (req, res) => {
       LEFT JOIN movie_genres mg ON m.movie_id = mg.movie_id
       LEFT JOIN genres g ON mg.genre_id = g.genre_id
     `;
-
-    // ── Dynamic WHERE clause building ──
-    // We collect conditions in an array, then join them with AND
     const conditions = [];  // e.g., ['m.content_type = $1', 'm.has_oscar = $2']
     const values = [];      // e.g., ['movie', true]
     let valueIndex = 1;     // Parameter index ($1, $2, $3...)
@@ -136,9 +101,6 @@ export const getAllMovies = async (req, res) => {
     }
 
     // Filter by genre using a SUBQUERY
-    // Why a subquery? Because genres are in a separate table (movie_genres).
-    // The subquery finds all movie_ids that have the matching genre,
-    // then the outer query checks if our movie is IN that list.
     if (genre) {
       conditions.push(`m.movie_id IN (
         SELECT mg2.movie_id FROM movie_genres mg2
@@ -149,7 +111,7 @@ export const getAllMovies = async (req, res) => {
       valueIndex++;
     }
 
-    // Filter by Oscar winners (has_oscar = true)
+    //Filter by Oscar winners (has_oscar = true)
     if (oscar === 'true') {
       conditions.push(`m.has_oscar = $${valueIndex}`);
       values.push(true);    // Parameterized even for booleans (security best practice)
@@ -324,12 +286,10 @@ export const getMovieFull = async (req, res) => {
       return res.status(400).json({ error: 'Invalid movie ID' });
     }
 
-    // ── Launch ALL 7 queries in parallel using Promise.all() ──
-    // Each query is independent, so they can run simultaneously.
-    // The database handles them as separate connections from the pool.
+    // Launch ALL 7 queries in parallel using Promise.all() 
     const queries = [
       // Query 0: Movie details + average rating + genres
-      // (Same complex multi-JOIN from reviews controller)
+
       pool.query(`
         SELECT m.*,
           COALESCE(ROUND(AVG(r.rating)::NUMERIC, 1), 0) AS average_rating,
@@ -389,14 +349,13 @@ export const getMovieFull = async (req, res) => {
         LIMIT 4
       `, [id]),
       // Query 6: Watchlist check (only runs if userId is provided)
-      // If no userId, we resolve with null immediately (no DB call)
+
       userId ? pool.query(`
         SELECT COUNT(*) > 0 AS "inWatchlist"
         FROM watchlist WHERE user_id = $1 AND movie_id = $2
       `, [userId, id]) : Promise.resolve(null)
     ];
 
-    // Wait for ALL queries to finish. results[0] through results[6]
     // correspond to the queries above.
     const results = await Promise.all(queries);
 
@@ -406,8 +365,6 @@ export const getMovieFull = async (req, res) => {
     }
 
     // Combine all results into one clean response object.
-    // The frontend receives this as a single JSON object with
-    // movie, reviews, cast, directors, writers, similar, inWatchlist.
     res.json({
       movie: results[0].rows[0],           // Single movie object
       reviews: results[1].rows,             // Array of review objects

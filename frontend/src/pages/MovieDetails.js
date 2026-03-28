@@ -1,24 +1,6 @@
-// ================================================================
+
 // MOVIE DETAILS PAGE — Full Information About a Single Movie
-// ================================================================
-// This page shows EVERYTHING about a movie/series:
-//   - Movie info (title, description, poster, year, duration)
-//   - Average rating and review count
-//   - Genres, Oscar badge, Netflix link
-//   - YouTube trailer (embedded)
-//   - Season breakdown (for series)
-//   - Directors, Writers, Cast members
-//   - User reviews with ability to write new ones
-//   - Similar movie recommendations
-//   - Add to Watchlist button
-//
-// PERFORMANCE:
-//   Uses the getMovieFull() API endpoint which returns ALL of this
-//   data in a SINGLE API call (instead of 7 separate calls).
-//   This is possible because the backend uses Promise.all() to
-//   run all 7 database queries in parallel.
-//
-// REACT PATTERNS:
+
 //   useParams()   → Gets the :id from the URL (/movie/42 → id = 42)
 //   useNavigate() → Programmatic navigation (e.g., redirect to login)
 //   useUser()     → Access current user from context (for auth)
@@ -35,8 +17,7 @@ import { searchPersonPhoto, searchMovieRating, searchMoviePoster, searchMoviePro
 import '../styles/MovieDetails.css';
 
 function MovieDetails() {
-  // useParams() extracts the :id from the URL route defined in App.js
-  // For /movie/42, id = "42"
+
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useUser();  // Current logged-in user (or null)

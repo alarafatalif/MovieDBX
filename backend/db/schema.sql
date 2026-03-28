@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS persons(
     photo_url      TEXT
 );
 -- Reviews table
+--user id is used
 CREATE TABLE IF NOT EXISTS reviews (
     review_id   SERIAL PRIMARY KEY,
     movie_id    INTEGER REFERENCES movies(movie_id) ON DELETE CASCADE,

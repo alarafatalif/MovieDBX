@@ -1,31 +1,26 @@
-// ============================================================
-// users.controller.js — User Authentication & Profile Logic
-// ============================================================
+
 // Handles registration, login, and user profile retrieval.
 //
 // PASSWORD SECURITY (bcrypt):
-//   We NEVER store plain-text passwords in the database.
-//   Instead, we use bcrypt to create a one-way hash:
-//
-//   Registration:
-//     "myPassword123" → bcrypt.hash() → "$2b$10$N9qo8uLOickgx2ZMRZoMye..."
-//     The hash is stored in the database. The original password is gone forever.
-//
-//   Login:
-//     User types "myPassword123" → bcrypt.compare(typed, storedHash)
-//     bcrypt runs the same algorithm and checks if they match.
-//     Returns true/false. You can NEVER reverse a hash back to the password.
-//
-//   Salt Rounds (10):
-//     The "10" in bcrypt.hash(password, 10) means the algorithm runs 2^10 = 1024
-//     iterations. Higher = more secure but slower. 10 is the industry standard.
-// ============================================================
+//password is saved as a hash
+
+//   Explanation: What are "Salt Rounds" in bcrypt hashing?
+//     When you use bcrypt.hash(password, 10), the "10" is the salt rounds parameter.
+//     Salt rounds control how many times the hashing algorithm runs over the password; it's 2^10 (or 1024) iterations.
+//     Increasing salt rounds makes password hashes much slower to compute—making brute-force attacks far harder, but also increases processing time.
+//     Using 10 salt rounds is a common balance: it provides strong password protection and reasonable performance on modern systems.
 
 import pool from '../db/db.js';
 import { logActivity } from './activities.controller.js';
 import bcrypt from 'bcrypt';   // Password hashing library
 import jwt from 'jsonwebtoken';
-import { getJwtSecret } from '../utils/jwtSecret.js';
+
+const getJwtSecret = () => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET is not set');
+  }
+  return process.env.JWT_SECRET;
+};
 
 const buildToken = (user) =>
   jwt.sign(
@@ -34,25 +29,12 @@ const buildToken = (user) =>
     { expiresIn: '7d' }
   );
 
-// ============================================================
 // POST /api/users/register → Register a New User
-// ============================================================
-// 1. Validates that all fields are provided
-// 2. Checks if username or email already exists
-// 3. Hashes the password with bcrypt
-// 4. Inserts into the users table
-// 5. Returns the new user (WITHOUT the password hash)
-//
-// REQUEST BODY: { username: "alif", email: "alif@email.com", password: "secret123" }
-// ============================================================
+
 export const registerUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    // ── Validation ───────────────────────────────────────────
-    // NEVER trust frontend-only validation. A user could bypass
-    // the frontend entirely (e.g., using Postman or curl) and send
-    // invalid data directly to this endpoint. Always validate here too.
     if (!username || !email || !password) {
       return res.status(400).json({ error: 'Username, email, and password are required' });
     }
@@ -61,9 +43,7 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ error: 'Password must be at least 6 characters' });
     }
 
-    // ── Check for Existing User ─────────────────────────────
-    // Single query using OR — checks both username and email at once.
-    // More efficient than two separate SELECT queries.
+    // Check for Existing User
     const userCheck = await pool.query(
       'SELECT username, email FROM users WHERE username = $1 OR email = $2',
       [username, email]
@@ -78,16 +58,11 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ error: 'Email already registered' });
     }
 
-    // ── Hash the Password ───────────────────────────────────
-    // bcrypt.hash(plainPassword, saltRounds)
-    //   "secret123" → "$2b$10$X7z8k9u..." (irreversible one-way hash)
-    // This hashed version is what gets stored in the database.
+    // Hash the Password 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ── Insert into Database ─────────────────────────────────
-    // Notice: we store hashedPassword, NOT the plain password.
-    // RETURNING clause specifies which columns to return — we
-    // deliberately EXCLUDE password_hash from the response.
+    // ── Insert into Database
+
     const isAdmin = username.trim().toLowerCase() === 'alif';
 
     const result = await pool.query(
@@ -114,22 +89,9 @@ export const registerUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-// ============================================================
 // POST /api/users/login → Authenticate a User
-// ============================================================
-// 1. Finds the user by username
-// 2. Compares the typed password against the stored hash
-// 3. If they match, returns user data (WITHOUT the password hash)
-//
-// SECURITY:
-//   We use the SAME error message for wrong username AND wrong password.
-//   "Invalid username or password" — this is intentional.
-//   If we said "Username not found" vs "Wrong password", an attacker
-//   could use that to figure out which usernames exist in our database.
-//
-// REQUEST BODY: { username: "alif", password: "secret123" }
-// ============================================================
+
+
 export const loginUser = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -138,14 +100,13 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ error: 'Username and password are required' });
     }
 
-    // Fetch the user by username — we need password_hash for comparison
+    // Fetch the user by username for hash comparison
     const result = await pool.query(
       'SELECT user_id, username, email, password_hash, created_at, is_admin FROM users WHERE username = $1',
       [username]
     );
 
     if (result.rows.length === 0) {
-      // User doesn't exist — but we use a generic error message (see above)
       return res.status(401).json({ error: 'Invalid username or password' });
     }
 
@@ -159,8 +120,7 @@ export const loginUser = async (req, res) => {
       user.is_admin = updated.rows[0].is_admin;
     }
 
-    // bcrypt.compare(plainPassword, storedHash) → returns true/false
-    // It takes the typed password, hashes it the same way, and checks if it matches
+    // bcrypt.compare(plainPassword, storedHash)
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!passwordMatch) {
@@ -168,7 +128,6 @@ export const loginUser = async (req, res) => {
     }
 
     // Login successful! Return user data WITHOUT the password_hash.
-    // The frontend stores this in localStorage to keep the user logged in.
     const token = buildToken(user);
 
     res.json({
@@ -187,7 +146,6 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// ============================================================
 // GET /api/users/:userId → Get User Profile with Stats
 // ============================================================
 // Returns the user's profile information along with aggregate statistics:
